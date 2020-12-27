@@ -1,0 +1,34 @@
+{% extends "frontend/base.html" %}
+{% block "content" %}
+
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold text-primary">Your Moods</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table data-order="[[ 0, &quot;desc&quot; ]]" class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                    <thead>
+                                        <tr>
+                                            <th>Timestamp</th>
+                                            <th>Mood</th>
+                                            <th>Activities</th>
+                                            <th>Title</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for status in object_list %}
+                                        <tr onclick="window.location.href='{% url "mood:status_view" status.id %}'">
+                                            <td data-order="{{ status.timestamp | date:"U" }}">{{ status.timestamp }}</td>
+                                            <td><i data-order="{{ status.mood.value }}" style="color:{{ status.mood.color }};" class="{{ status.mood.icon }}"></i> {{ status.mood }}</td>
+                                            <td>{% for activity in status.statusactivity_set.all %}<i title="{{ activity.activity }}{% if activity.comment %} - {{ activity.comment }}{% endif %}" style="color:{{ activity.activity.color }};" class="{{ activity.activity.icon }}"></i> {% endfor %}</td>
+                                            <td>{{ status.short_text }}</td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+{% endblock %}

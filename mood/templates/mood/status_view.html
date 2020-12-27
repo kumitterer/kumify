@@ -1,0 +1,55 @@
+{% extends "frontend/base.html" %}
+{% block "content" %}
+
+                        <div class="row">
+
+                            <!-- Entry details -->
+                            <div class="col-xl-8 col-lg-7">
+                                <div class="card shadow mb-4">
+                                    <!-- Card Header - Dropdown -->
+                                    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                        <h6 class="m-0 font-weight-bold text-primary">Diary Entry</h6>
+
+                                    </div>
+                                    <!-- Card Body -->
+                                    <div class="card-body">
+                                        <p><i>{{ object.timestamp }}</i></p>
+                                        <h3>{{ object.title }}</h3>
+                                        <blockquote>{{ object.text }}</blockquote>
+                                    </div>
+                                </div>
+                            </div>
+    
+                            <!-- Mood -->
+                            <div class="col-xl-4 col-lg-5">
+                                <div class="card shadow mb-4">
+                                    <!-- Card Header - Dropdown -->
+                                    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                        <h6 class="m-0 font-weight-bold text-primary">Mood</h6>
+                                    </div>
+                                    <!-- Card Body -->
+                                    <div class="card-body">
+                                        <i title="{{ object.mood }}" style="color: {{ object.mood.color }}; font-size: 200px;" title="" class="{{ object.mood.icon }}"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card shadow mb-4">
+                            <div class="card-header py-3">
+                                <h6 class="m-0 font-weight-bold text-primary">Activities</h6>
+                            </div>
+                            <div class="py-3">
+                                <div class="container">
+                                  <div class="row" id="cards">
+                                      {% for activity in status.statusactivity_set.all %}
+                                        <div class="card"> 
+                                            <i title="{{ activity.activity }}" style="display: inline; color: {{ activity.activity.color }}; font-size: 50px;" title="" class="{{ activity.activity.icon }}"></i>
+                                        </div> 
+                                        {% endfor %}
+                                    </div>
+                              </div>
+                        </div>
+                        </div>
+
+{% endblock %}
