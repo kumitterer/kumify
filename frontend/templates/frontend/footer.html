@@ -1,0 +1,27 @@
+{% load static %}
+
+<!-- Bootstrap core JavaScript-->
+<script src="{% static "frontend/jquery/jquery.min.js" %}"></script>
+<script src="{% static "frontend/bootstrap/js/bootstrap.bundle.min.js" %}"></script>
+
+<!-- Core plugin JavaScript-->
+<script src="{% static "frontend/jquery-easing/jquery.easing.min.js" %}"></script>
+
+<!-- Custom scripts for all pages-->
+<script src="{% static "frontend/js/sb-admin-2.min.js" %}"></script>
+<script src="{% static "frontend/js/bosskey.js" %}"></script>
+
+<!-- Page level plugins -->
+<script src="{% static "frontend/datatables/jquery.dataTables.min.js" %}"></script>
+<script src="{% static "frontend/datatables/dataTables.bootstrap4.min.js" %}"></script>
+
+<script src="{% static "frontend/js/datatables-demo.js" %}"></script>
+
+<!-- Page level custom scripts -->
+{% for script in scripts %}
+<script src="{% static script %}"></script>
+{% endfor %}
+
+</body>
+
+</html>

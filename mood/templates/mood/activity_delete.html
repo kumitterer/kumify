@@ -1,0 +1,16 @@
+{% extends "frontend/base.html" %}
+{% block "content" %}
+
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold text-primary">Delete {{ object }}</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <p>Are you sure you wish to delete {{ object }}? This cannot be undone. Mood entries that are associated with this activity will not be deleted.</p>
+                                <form action="" method="POST">{% csrf_token %}<button class="form-control btn-danger" type="submit">Delete Activity</button></form>
+                            </div>
+                        </div>
+                    </div>
+
+{% endblock %}
