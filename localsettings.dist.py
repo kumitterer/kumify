@@ -8,6 +8,10 @@ SECRET_KEY = "longrandomstring"
 
 DEBUG = False
 
+# Specify the time zone you are in. This will affect the times displayed in the application.
+
+TIME_ZONE = "Europe/Vienna"
+
 # You may set this variable to a list of domain names that are allowed to be used to access your instance.
 
 ALLOWED_HOSTS = ["*"] # Rationale: The application should be running behind a reverse proxy anyway if it's public - let that handle which hosts are allowed
