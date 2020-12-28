@@ -88,15 +88,12 @@ class StatusEditView(LoginRequiredMixin, UpdateView):
             StatusMedia.objects.create(status=form.instance, file=attachment)
         
         for activity in form.cleaned_data["activities"]:
-            try:
-                aobj = Activity.objects.get(user=self.request.user, id=activity)
-                if not aobj in form.instance.activity_set:
-                    StatusActivity.objects.create(activity=aobj, status=form.instance)
-            except Activity.DoesNotExist:
-                pass
+            if activity.user == self.request.user:
+                if not activity in form.instance.activity_set:
+                    StatusActivity.objects.create(activity=activity, status=form.instance)
 
         for statusactivity in form.instance.statusactivity_set.all():
-            if not statusactivity.activity.id in form.cleaned_data["activities"]:
+            if not statusactivity.activity in form.cleaned_data["activities"]:
                 statusactivity.delete()
 
         return super().form_valid(form)
