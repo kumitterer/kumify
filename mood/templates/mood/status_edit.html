@@ -27,7 +27,7 @@
                                         <option value="" {% if not object.mood %}selected{% endif %}>---------</option>
     
                                         {% for mood in request.user.mood_set.all|dictsort:"value" %}
-                                        <option data-icon="{{ mood.icon }}" value="{{ mood.value }}" {% if object.mood == mood %}selected{% endif %}>{{ mood }}</option>
+                                        <option data-icon="{{ mood.icon }}" value="{{ mood.id }}" {% if object.mood == mood %}selected{% endif %}>{{ mood }}</option>
                                         {% endfor %}
     
                                         </select></td></tr>
