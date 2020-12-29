@@ -40,3 +40,7 @@ DB_PORT = 3306 # Port of the database server - the default value usually works
 DB_NAME = None # Name of the database to be used
 DB_USER = None # User name to authenticate with
 DB_PASS = None # Password to authenticate with
+
+# If you wish to enable the Telegram gateway to send and receive messages, enter the token you have received from the @BotFather here.
+
+TELEGRAM_TOKEN = None

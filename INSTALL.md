@@ -35,3 +35,13 @@ The application is then available at [http://localhost:8000/].
 If you want to make your Kumify instance available through a network, you will need to set up something like gunicorn and nginx. How this works is beyond the scope of this document. To prepare your static files for this, make sure ```STATIC_ROOT``` is set to the correct location in localsettings.py if you don't use S3, then run:
 
 ```python3 manage.py collectstatic```
+
+### Cron job
+
+In order to use scheduled tasks, you need to make sure that the ```/cron/``` endpoint is called at regular intervals. Every five minutes should work fine. Use a command like ```curl http://localhost:8000/cron/```, for example.
+
+### Telegram webhook
+
+If you wish to receive incoming messages through the Telegram gateway, your server must be reachable from the Internet. Configure a public IP/domain name as well as an HTTPS certificate, then run:
+
+```python3 manage.py telegramwebhook```

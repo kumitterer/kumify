@@ -18,6 +18,8 @@ INSTALLED_APPS = [
     'common',
     'frontend',
     'mood',
+    'msgio',
+    'cronhandler',
 ]
 
 MIDDLEWARE = [
@@ -122,3 +124,8 @@ LOGOUT_REDIRECT_URL = "/"
 
 DEFAULT_FILE_STORAGE = 'django.core.files.storage.FileSystemStorage' if not AWS_ACCESS_KEY_ID else 'storages.backends.s3boto3.S3Boto3Storage'
 STATICFILES_STORAGE = 'storages.backends.s3boto3.S3StaticStorage' if AWS_ACCESS_KEY_ID else 'django.contrib.staticfiles.storage.StaticFilesStorage'
+
+try:
+    assert TELEGRAM_TOKEN
+except NameError:
+    TELEGRAM_TOKEN = None

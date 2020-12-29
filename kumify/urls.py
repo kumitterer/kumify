@@ -16,9 +16,13 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
+from msgio.views import TelegramWebhookView
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include('django.contrib.auth.urls')),
     path('', include("frontend.urls", "frontend")),
     path('mood/', include("mood.urls", "mood")),
+    path('cron/', include("cronhandler.urls", "cron")),
+    path('webhooks/telegram/', TelegramWebhookView.as_view()),
 ]

@@ -2,10 +2,12 @@ from django.views.generic import TemplateView, ListView, UpdateView, DetailView,
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
+from django.http import HttpResponseRedirect
 
 from .models import Status, Activity, Mood, StatusMedia, StatusActivity
 from .forms import StatusForm
 
+from msgio.models import NotificationDailySchedule, Notification
 
 class StatusListView(LoginRequiredMixin, ListView):
     template_name = "mood/status_list.html"
@@ -236,3 +238,76 @@ class MoodCreateView(LoginRequiredMixin, CreateView):
 
     def get_success_url(self):
         return reverse_lazy("mood:activity_list")
+
+
+class NotificationListView(LoginRequiredMixin, ListView):
+    template_name = "mood/notification_list.html"
+    model = NotificationDailySchedule
+    fields = ["time"]
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["title"] = "Notifications"
+        context["subtitle"] = "The daily reminders you have set up."
+        context["buttons"] = [(reverse_lazy("mood:notification_create"), "New Notification", "plus")]
+        return context
+
+    def get_queryset(self):
+        return NotificationDailySchedule.objects.filter(notification__recipient=self.request.user, notification__app="mood")
+
+
+class NotificationCreateView(LoginRequiredMixin, CreateView):
+    template_name = "mood/notification_edit.html"
+    model = NotificationDailySchedule
+    fields = ["time"]
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["title"] = "Create Notification"
+        context["subtitle"] = "Add a new daily notification."
+        return context
+
+    def form_valid(self, form):
+        notification = Notification.objects.create(content="Hi, it's time for a new Kumify entry! Go to %KUMIFYURL% to document your mood!", recipient=self.request.user, app="mood")
+        obj = form.save(commit=False)
+        obj.notification = notification
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse_lazy("mood:notification_list")
+
+
+class NotificationEditView(LoginRequiredMixin, UpdateView):
+    template_name = "mood/notification_edit.html"
+    model = NotificationDailySchedule
+    fields = ["time"]
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["title"] = "Edit Notification"
+        context["subtitle"] = "Change the time of a daily notification."
+        context["buttons"] = [(reverse_lazy("mood:notification_delete", args=[self.kwargs["id"]]), "Delete Notification")]
+        return context
+
+    def get_success_url(self):
+        return reverse_lazy("mood:notification_list")
+
+    def get_object(self):
+        return get_object_or_404(NotificationDailySchedule, notification__recipient=self.request.user, id=self.kwargs["id"])
+
+
+class NotificationDeleteView(LoginRequiredMixin, DeleteView):
+    template_name = "mood/activity_delete.html"
+    model = NotificationDailySchedule
+
+    def get_object(self):
+        return get_object_or_404(NotificationDailySchedule, notification__recipient=self.request.user, id=self.kwargs["id"])
+
+    def delete(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        success_url = self.get_success_url()
+        self.object.notification.delete()
+        return HttpResponseRedirect(success_url)
+
+    def get_success_url(self):
+        return reverse_lazy("mood:notification_list")
