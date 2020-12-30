@@ -1,10 +1,11 @@
-from django.conf import settings
 from django.views.generic import View
 from django.dispatch import receiver
 
 import json
 
 import telegram
+
+from dbsettings.functions import dbsettings
 
 from ..signals import send_message
 from ..models import GatewayUser
@@ -14,7 +15,7 @@ class TelegramWebhookView(View):
         pass # TODO: Implement webhook receiver and management tool
 
 class TelegramDispatcher:
-    def __init__(self, token=settings.TELEGRAM_TOKEN):
+    def __init__(self, token=dbsettings.TELEGRAM_TOKEN):
         self.bot = telegram.Bot(token=token)
 
     def send(self, message, chat_id):
