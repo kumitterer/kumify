@@ -53,7 +53,10 @@ def average_mood(context, start, end=None):
     for status in status_list:
         moods.append(status.mood.value)
 
-    average = sum(moods) / len(moods)
+    try:
+        average = sum(moods) / len(moods)
+    except ZeroDivisionError:
+        average = None
 
     return average
 
