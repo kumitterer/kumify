@@ -40,7 +40,11 @@ If you want to make your Kumify instance available through a network, you will n
 
 In order to use scheduled tasks, you need to make sure that the ```/cron/``` endpoint is called at regular intervals. Every five minutes should work fine. Use a command like ```curl http://localhost:8000/cron/```, for example.
 
-### Telegram webhook
+### Telegram
+
+To set up the Telegram integration, create a new bot by talking to the @BotFather, then run:
+
+```python3 manage.py telegram```
 
 If you wish to receive incoming messages through the Telegram gateway, your server must be reachable from the Internet. Configure a public IP/domain name as well as an HTTPS certificate, then run:
 
