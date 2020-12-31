@@ -16,6 +16,13 @@ This project was tested with Python 3.8.6 on an Ubuntu Linux host. It should the
 
 Any configuration you have to do takes place in a localsettings.py file in the project's root directory. Copy the provided localsettings.dist.py to localsettings.py and make any modifications you may need. The options are documented within that file.
 
+### Prepare database
+
+To set up the database, run the following commands:
+
+```python3 manage.py makemigrations```
+```python3 manage.py migrate```
+
 ### Creating superuser account
 
 To create an account to login to your Kumify instance, you need to use the following command in the project's root directory:
