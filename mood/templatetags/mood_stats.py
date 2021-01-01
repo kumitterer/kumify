@@ -51,7 +51,8 @@ def average_mood(context, start, end=None):
     moods = list()
 
     for status in status_list:
-        moods.append(status.mood.value)
+        if status.mood:
+            moods.append(status.mood.value)
 
     try:
         average = sum(moods) / len(moods)
