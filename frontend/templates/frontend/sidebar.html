@@ -56,6 +56,35 @@
             </li>
 
             <!-- Divider -->
+            <hr class="sidebar-divider">
+
+            <!-- Heading -->
+            <div class="sidebar-heading">
+                Dreams
+            </div>
+
+            <!-- Nav Item - Dream List -->
+            <li class="nav-item {% if title == "Dream List" %}active{% endif %}">
+                <a class="nav-link" href="{% url "dreams:dream_list" %}">
+                    <i class="fas fa-fw fa-smile"></i>
+                    <span>Dream List</span></a>
+            </li>
+
+            <!-- Nav Item - Theme List -->
+            <li class="nav-item {% if title == "Themes" %}active{% endif %}">
+                <a class="nav-link" href="{% url "dreams:theme_list" %}">
+                    <i class="fas fa-fw fa-smile"></i>
+                    <span>Themes</span></a>
+            </li>
+
+            <!-- Nav Item - Notification List -->
+            <li class="nav-item {% if title == "Notifications" %}active{% endif %}">
+                <a class="nav-link" href="{% url "dreams:notification_list" %}">
+                    <i class="fas fa-fw fa-smile"></i>
+                    <span>Notifications</span></a>
+            </li>
+
+            <!-- Divider -->
             <hr class="sidebar-divider d-none d-md-block">
 
             <!-- Sidebar Toggler (Sidebar) -->

@@ -25,4 +25,5 @@ urlpatterns = [
     path('mood/', include("mood.urls", "mood")),
     path('cron/', include("cronhandler.urls", "cron")),
     path('webhooks/telegram/', TelegramWebhookView.as_view()),
+    path('dreams/', include("dreams.urls", "dreams")),
 ]

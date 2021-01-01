@@ -14,6 +14,9 @@ class Theme(models.Model):
     icon = models.CharField(default="fas fa-bed", max_length=64)
     color = ColorField(default="#000000")
 
+    def __str__(self):
+        return self.name
+
 class Dream(models.Model):
     class DreamTypes(models.IntegerChoices):
         NIGHT = 0, 'Night (main) sleep'
@@ -21,12 +24,21 @@ class Dream(models.Model):
         NAP = 2, 'Napping'
 
     user = models.ForeignKey(get_user_model(), models.CASCADE)
+    timestamp = models.DateTimeField(default=timezone.now)
     title = models.CharField(max_length=64)
     content = models.TextField()
     type = models.IntegerField(choices=DreamTypes.choices)
     mood = models.ForeignKey(Mood, models.SET_NULL, null=True)
     lucid = models.BooleanField(default=False)
     wet = models.BooleanField(default=False)
+
+    @property
+    def short_text(self):
+        return self.title or self.content[:64]
+
+    @property
+    def theme_set(self):
+        return [theme.theme for theme in self.dreamtheme_set.all()]
 
 class DreamTheme(models.Model):
     dream = models.ForeignKey(Dream, models.CASCADE)
