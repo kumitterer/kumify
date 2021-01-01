@@ -42,7 +42,7 @@
                             <div class="py-3">
                                 <div class="container">
                                   <div class="row" id="cards">
-                                      {% for activity in status.statusactivity_set.all %}
+                                      {% for activity in object.statusactivity_set.all %}
                                         <div class="card"> 
                                             <i title="{{ activity.activity }}" style="display: inline; color: {{ activity.activity.color }}; font-size: 50px;" title="" class="{{ activity.activity.icon }}"></i>
                                         </div> 
