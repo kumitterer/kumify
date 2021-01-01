@@ -4,6 +4,7 @@
 
 [_] Make sure users can't access other users' data
 [_] Allow configuration as single user instance
+[_] User profiles / names / gateway config
 
 ## mood module
 
