@@ -22,6 +22,7 @@ INSTALLED_APPS = [
     'msgio',
     'cronhandler',
     'cbt',
+    'dreams',
 ]
 
 MIDDLEWARE = [
