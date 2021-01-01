@@ -297,7 +297,7 @@ class NotificationEditView(LoginRequiredMixin, UpdateView):
 
 
 class NotificationDeleteView(LoginRequiredMixin, DeleteView):
-    template_name = "mood/activity_delete.html"
+    template_name = "mood/notification_delete.html"
     model = NotificationDailySchedule
 
     def get_object(self):
