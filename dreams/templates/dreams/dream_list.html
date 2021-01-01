@@ -1,0 +1,34 @@
+{% extends "frontend/base.html" %}
+{% block "content" %}
+
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold text-primary">Your Dreams</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table data-order="[[ 0, &quot;desc&quot; ]]" class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                    <thead>
+                                        <tr>
+                                            <th>Timestamp</th>
+                                            <th>Mood</th>
+                                            <th>Themes</th>
+                                            <th>Title</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for dream in object_list %}
+                                        <tr onclick="window.location.href='{% url "dreams:dream_view" dream.id %}'">
+                                            <td data-order="{{ dream.timestamp | date:"U" }}">{{ dream.timestamp }}</td>
+                                            <td><i data-order="{{ dream.mood.value }}" style="color:{{ dream.mood.color }};" class="{{ dream.mood.icon }}"></i> {{ dream.mood }}</td>
+                                            <td>{% for theme in dream.dreamtheme_set.all %}<i title="{{ theme.theme }}{% if theme.comment %} - {{ theme.comment }}{% endif %}" style="color:{{ theme.theme.color }};" class="{{ theme.theme.icon }}"></i> {% endfor %}</td>
+                                            <td>{{ dream.short_text }}</td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+{% endblock %}
