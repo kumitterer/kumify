@@ -1,30 +1,36 @@
 # To-Do List
 
+## General
+
+[_] Make sure users can't access other users' data
+[_] Allow configuration as single user instance
+
 ## mood module
 
 [_] Missing mood views
-[ ] Statistics / graphs
+[_] Statistics / graphs
 
 ## cbt module
 
-[ ] Complete thought record creation
-[ ] Thought record editing (?)
-[ ] Thought record deletion
+[_] Complete thought record creation
+[_] Thought record editing (?)
+[_] Thought record deletion
 
 ## msgio module
 
-[ ] Implement Telegram webhooks
+[_] Implement Telegram webhooks
 
 ## dreams module
 
 [x] New dream page
 [x] Edit dream page
 [x] Delete dream page
-[ ] Statistics / template tags
-[ ] Check for copy-paste errors in pages
+[x] Statistics / template tags
+[_] Check for copy-paste errors in pages
 
 ## Frontend
 
-[ ] Better icons for sidebar items
-[ ] Sidebar auto-generation (?)
-[ ] Fix sidebar highlighting for pages with same name
+[_] Better icons for sidebar items
+[_] Sidebar auto-generation (?)
+[_] Fix sidebar highlighting for pages with same name
+[_] Move dashboard components to module templates
