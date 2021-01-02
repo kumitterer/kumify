@@ -9,6 +9,7 @@ from dbsettings.functions import dbsettings
 
 from ..signals import send_message
 from ..models import GatewayUser
+from ..helpers import run_filters
 
 class TelegramWebhookView(View):
     def post(self, *args, **kwargs):
@@ -29,4 +30,6 @@ def telegram_sender(sender, **kwargs):
         settings = GatewayUser.objects.get(user=notification.recipient, gateway="telegram")
         chat_id = settings.gatewayusersetting_set.get(key="chat_id").value
 
-        TelegramDispatcher().send(notification.content, chat_id)
+        text = run_filters(notification)
+
+        TelegramDispatcher().send(text, chat_id)
