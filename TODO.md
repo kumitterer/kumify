@@ -29,6 +29,19 @@
 [x] Statistics / template tags
 [_] Check for copy-paste errors in pages
 
+## meds module
+
+[ ] Implement medication tracker
+[ ] Implement supply / refill system
+
+## habits module
+
+[ ] Implement regular habit tracker
+
+## friends module
+
+[ ] Implement basic personal relationship manager
+
 ## Frontend
 
 [_] Better icons for sidebar items
