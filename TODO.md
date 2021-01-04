@@ -4,7 +4,7 @@
 
 [_] Make sure users can't access other users' data
 [_] Allow configuration as single user instance
-[_] User profiles / names / gateway config
+[_] User profiles / names / gateway config / time zone settings
 
 ## mood module
 
@@ -31,16 +31,16 @@
 
 ## meds module
 
-[ ] Implement medication tracker
-[ ] Implement supply / refill system
+[_] Implement medication tracker
+[_] Implement supply / refill system
 
 ## habits module
 
-[ ] Implement regular habit tracker
+[_] Implement regular habit tracker
 
 ## friends module
 
-[ ] Implement basic personal relationship manager
+[_] Implement basic personal relationship manager
 
 ## Frontend
 
