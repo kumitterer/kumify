@@ -23,6 +23,9 @@ INSTALLED_APPS = [
     'cronhandler',
     'cbt',
     'dreams',
+    'meds',
+    'friends',
+    'habits',
 ]
 
 MIDDLEWARE = [
