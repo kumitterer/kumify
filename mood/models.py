@@ -46,7 +46,7 @@ class Activity(models.Model):
 
 class StatusMedia(models.Model):
     status = models.ForeignKey(Status, models.CASCADE)
-    media = models.FileField(get_upload_path)
+    file = models.FileField(get_upload_path)
 
 class StatusActivity(models.Model):
     status = models.ForeignKey(Status, models.CASCADE)
