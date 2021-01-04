@@ -50,6 +50,21 @@
                                     </div>
                               </div>
                         </div>
+
+                        <div class="card shadow mb-4">
+                            <div class="card-header py-3">
+                                <h6 class="m-0 font-weight-bold text-primary">Attachments</h6>
+                            </div>
+                            <div class="py-3">
+                                <div class="container">
+                                  <ul>
+                                      {% for attachment in object.statusmedia_set.all %}
+                                      <li><a href="{{ attachment.file.url }}">{{ attachment.file.name }}</a></li>
+                                      {% endfor %}
+                                  </ul>
+                              </div>
                         </div>
+
+                    </div>
 
 {% endblock %}
