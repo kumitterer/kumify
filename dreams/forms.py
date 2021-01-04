@@ -6,7 +6,7 @@ from .models import Dream, Theme
 
 class DreamForm(ModelForm):
     uploads = MultiFileField(required=False)
-    themes = ModelMultipleChoiceField(queryset=Theme.objects.all())
+    themes = ModelMultipleChoiceField(queryset=Theme.objects.all(), required=False)
 
     class Meta:
         model = Dream
