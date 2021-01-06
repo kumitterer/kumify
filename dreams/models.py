@@ -3,6 +3,8 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 from django.utils import timezone
 from django.contrib.auth import get_user_model
 
+import os.path
+
 from mood.models import Mood
 from common.helpers import get_upload_path
 
@@ -47,6 +49,10 @@ class DreamTheme(models.Model):
 class DreamMedia(models.Model):
     dream = models.ForeignKey(Dream, models.CASCADE)
     media = models.FileField(get_upload_path)
+
+    @property
+    def basename(self):
+        return os.path.basename(self.media.name)
 
 class ThemeRating(models.Model):
     theme = models.ForeignKey(Theme, models.CASCADE)
