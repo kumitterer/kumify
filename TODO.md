@@ -48,3 +48,4 @@
 [_] Sidebar auto-generation (?)
 [_] Fix sidebar highlighting for pages with same name
 [_] Move dashboard components to module templates
+[_] Fix buttons on mobile devices
