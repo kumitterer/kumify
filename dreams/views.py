@@ -65,7 +65,7 @@ class DreamCreateView(LoginRequiredMixin, CreateView):
 
         for attachment in form.cleaned_data["uploads"]:
             dba = DreamMedia(dream=form.instance)
-            dba.media.save(get_upload_path(form.instance, dba.media.name), attachment)
+            dba.media.save(get_upload_path(form.instance, attachment.name), attachment)
             dba.save()
 
         return ret
