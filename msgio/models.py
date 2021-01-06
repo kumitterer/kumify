@@ -9,6 +9,7 @@ class Notification(models.Model):
     content = models.TextField()
     recipient = models.ForeignKey(get_user_model(), models.CASCADE)
     app = models.CharField(max_length=64, null=True, blank=True)
+    data = model.CharField(max_length=128, null=True, blank=True)
 
     def send(self):
         for dispatcher in self.notificationdispatcher_set.all():
