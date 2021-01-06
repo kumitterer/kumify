@@ -9,6 +9,7 @@ from django.http import HttpResponseRedirect
 from .models import Dream, DreamTheme, DreamMedia, Theme
 from .forms import DreamForm
 
+from common.helpers import get_upload_path
 from msgio.models import NotificationDailySchedule, Notification
 
 class DreamListView(LoginRequiredMixin, ListView):
@@ -63,7 +64,9 @@ class DreamCreateView(LoginRequiredMixin, CreateView):
                 DreamTheme.objects.create(theme=theme, dream=form.instance)
 
         for attachment in form.cleaned_data["uploads"]:
-            DreamMedia.objects.create(dream=form.instance, media=attachment)
+            dba = DreamMedia(dream=form.instance)
+            dba.media.save(get_upload_path(form.instance, dba.media.name), attachment)
+            dba.save()
 
         return ret
 
@@ -97,8 +100,10 @@ class DreamEditView(LoginRequiredMixin, UpdateView):
             if not dreamtheme.theme in form.cleaned_data["themes"]:
                 dreamtheme.delete()
 
-        for upload in form.cleaned_data["uploads"]:
-            DreamMedia.objects.create(dream=form.instance, media=upload)
+        for attachment in form.cleaned_data["uploads"]:
+            dba = DreamMedia(dream=form.instance)
+            dba.media.save(get_upload_path(form.instance, attachment.name), attachment)
+            dba.save()
 
         return super().form_valid(form)
 
