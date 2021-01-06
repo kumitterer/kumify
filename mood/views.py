@@ -7,6 +7,7 @@ from django.http import HttpResponseRedirect
 from .models import Status, Activity, Mood, StatusMedia, StatusActivity
 from .forms import StatusForm
 
+from common.helpers import get_upload_path
 from msgio.models import NotificationDailySchedule, Notification
 
 class StatusListView(LoginRequiredMixin, ListView):
@@ -61,7 +62,9 @@ class StatusCreateView(LoginRequiredMixin, CreateView):
                 StatusActivity.objects.create(activity=activity, status=form.instance)
 
         for attachment in form.cleaned_data["uploads"]:
-            StatusMedia.objects.create(status=form.instance, file=attachment)
+            dba = StatusMedia(status=form.instance)
+            dba.file.save(get_upload_path(form.instance, attachment.name), attachment)
+            dba.save()
 
         return ret
 
@@ -87,7 +90,9 @@ class StatusEditView(LoginRequiredMixin, UpdateView):
 
     def form_valid(self, form):
         for attachment in form.cleaned_data["uploads"]:
-            StatusMedia.objects.create(status=form.instance, file=attachment)
+            dba = StatusMedia(status=form.instance)
+            dba.file.save(get_upload_path(form.instance, attachment.name), attachment)
+            dba.save()
         
         for activity in form.cleaned_data["activities"]:
             if activity.user == self.request.user:
