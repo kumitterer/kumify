@@ -59,7 +59,7 @@
                                 <div class="container">
                                   <ul>
                                       {% for attachment in object.dreammedia_set.all %}
-                                      <li><a href="{{ attachment.media.url }}">{{ attachment.media.name }}</a></li>
+                                      <li><a href="{{ attachment.media.url }}">{{ attachment.basename }}</a></li>
                                       {% endfor %}
                                   </ul>
                               </div>
