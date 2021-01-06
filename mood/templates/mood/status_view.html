@@ -59,7 +59,7 @@
                                 <div class="container">
                                   <ul>
                                       {% for attachment in object.statusmedia_set.all %}
-                                      <li><a href="{{ attachment.file.url }}">{{ attachment.file.name }}</a></li>
+                                      <li><a href="{{ attachment.file.url }}">{{ attachment.basename }}</a></li>
                                       {% endfor %}
                                   </ul>
                               </div>

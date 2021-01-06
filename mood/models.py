@@ -3,6 +3,8 @@ from django.contrib.auth import get_user_model
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.utils import timezone
 
+import os.path
+
 from colorfield.fields import ColorField
 
 from common.helpers import get_upload_path
@@ -47,6 +49,10 @@ class Activity(models.Model):
 class StatusMedia(models.Model):
     status = models.ForeignKey(Status, models.CASCADE)
     file = models.FileField(get_upload_path)
+
+    @property
+    def basename(self):
+        return os.path.basename(self.file.name)
 
 class StatusActivity(models.Model):
     status = models.ForeignKey(Status, models.CASCADE)
