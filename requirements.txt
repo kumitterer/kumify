@@ -4,6 +4,8 @@ django[mysql]
 django-colorfield
 django-multiupload
 django-storages
+django-polymorphic
+django-multiselectfield
 git+git://github.com/Chive/django-multiupload.git@ba52e161a68ce19062c3655e89544c2d377990a0#egg=multiupload
 git+https://kumig.it/kumisystems/django-dbsettings.git
 git+https://kumig.it/kumisystems/django-filtersignals.git
@@ -11,3 +13,4 @@ mysqlclient
 boto3
 argon2_cffi
 python-telegram-bot
+python-dateutil
