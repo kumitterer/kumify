@@ -12,8 +12,17 @@ class Notification(models.Model):
     data = models.CharField(max_length=128, null=True, blank=True)
 
     def send(self):
-        for dispatcher in self.notificationdispatcher_set.all():
-            return send_message.send_robust(self.__class__, dispatcher=dispatcher.dispatcher, notification=self)
+        dispatchers = self.notificationdispatcher_set.all()
+        response = []
+
+        if dispatchers:
+            for dispatcher in dispatchers:
+                response.append(send_message.send_robust(self.__class__, dispatcher=dispatcher.dispatcher, notification=self))
+        else:
+            for dispatcher in GatewayUser.objects.filter(user=self.recipient):
+                response.append(send_message.send_robust(self.__class__, dispatcher=dispatcher.gateway, notification=self))
+
+        return response
 
 class NotificationDispatcher(models.Model):
     notification = models.ForeignKey(Notification, models.CASCADE)
