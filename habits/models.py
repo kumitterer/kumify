@@ -11,7 +11,7 @@ from common.fields import WeekdayField, DayOfMonthField
 
 class Habit(models.Model):
     name = models.CharField(max_length=64)
-    icon = models.CharField(default="fas fa-user-clock")
+    icon = models.CharField(default="fas fa-user-clock", max_length=64)
     color = ColorField(default="#000000")
     description = models.TextField(null=True, blank=True)
 
