@@ -46,13 +46,22 @@ def closest_mood(context, value):
     return found
 
 @register.simple_tag(takes_context=True)
-def average_mood(context, start, end=None):
+def average_mood(context, start, end=None, daily_averages=True):
     status_list = context["user"].status_set.filter(timestamp__gte=start.date(), timestamp__lte=(end.date() if end else start.date()))
-    moods = list()
+    moods = list() if not daily_averages else dict()
 
     for status in status_list:
         if status.mood:
-            moods.append(status.mood.value)
+            if daily_averages:
+                if not status.timestamp.date() in moods.keys():
+                    moods[status.timestamp.date()] = [status.mood.value]
+                else:
+                    moods[status.timestamp.date()].append(status.mood.value)
+            else:
+                moods.append(status.mood.value)
+
+    if daily_averages:
+        moods = [sum(entries) / len(entries) for date, entries in moods.items()]
 
     try:
         average = sum(moods) / len(moods)
@@ -62,11 +71,11 @@ def average_mood(context, start, end=None):
     return average
 
 @register.simple_tag(takes_context=True)
-def average_mood_weekly(context):
+def average_mood_weekly(context, daily_averages=True):
     now = timezone.now()
     start = now - timezone.timedelta(days=7)
 
-    return average_mood(context, start, now)
+    return average_mood(context, start, now, daily_averages)
 
 @register.simple_tag(takes_context=True)
 def most_common_activity(context, start, end=None):
