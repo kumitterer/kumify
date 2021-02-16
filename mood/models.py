@@ -37,11 +37,21 @@ class Status(models.Model):
     def __str__(self):
         return self.short_text
 
+class ActivityCategory(models.Model):
+    user = models.ForeignKey(get_user_model(), models.CASCADE)
+    name = models.CharField(max_length=64)
+    icon = models.CharField(default="fas fa-check", max_length=64)
+    color = ColorField(default="#000000")
+
+    def __str__(self):
+        return self.name
+
 class Activity(models.Model):
     user = models.ForeignKey(get_user_model(), models.CASCADE)
     name = models.CharField(max_length=64)
     icon = models.CharField(default="fas fa-check", max_length=64)
     color = ColorField(default="#000000")
+    category = models.ForeignKey(ActivityCategory, models.SET_NULL, null=True)
 
     def __str__(self):
         return self.name
