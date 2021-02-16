@@ -24,7 +24,7 @@ INSTALLED_APPS = [
     'cronhandler',
     'cbt',
     'dreams',
-    'meds',
+    'health',
     'friends',
     'habits',
 ]
