@@ -36,19 +36,18 @@
                                     <tr><th><label for="activities">Activities:</label></th><td>
                                         {% for activitycategory in request.user.activitycategory_set.all %}
 
-                                        <b>{{ activitycategory.name }}</b>
+                                        <p><b>{{ activitycategory.name }}</b></p>
 
-                                        {% for activity in activitycategory.activity_set.all %} 
+                                        {% for activity in activitycategory.activity_set.all|dictsort:"name" %}
                                             <input type="checkbox" {% if activity in object.activity_set %}checked{% endif %} value="{{ activity.id }}" name="activities"> <i class="{{ activity.icon }}" style="color:{{ activity.color }};"></i> {{ activity }}<br>
                                         {% endfor %}
                                         {% endfor %}
 
-                                        <b>Uncategorized activities</b>
+                                        {% other_activities as activities %}
+                                        {% if activities %}<p><b>Uncategorized activities</b></p>{% endif%}
 
-                                        {% for activitycategory in request.user.activitycategory_set.all %}
-                                        {% for activity in activitycategory.activity_set.all %} 
+                                        {% for activity in activities|dictsort:"name" %}
                                             <input type="checkbox" {% if activity in object.activity_set %}checked{% endif %} value="{{ activity.id }}" name="activities"> <i class="{{ activity.icon }}" style="color:{{ activity.color }};"></i> {{ activity }}<br>
-                                        {% endfor %}
                                         {% endfor %}
                                     </td></tr>
 
