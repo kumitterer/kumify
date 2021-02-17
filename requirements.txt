@@ -14,3 +14,4 @@ boto3
 argon2_cffi
 python-telegram-bot
 python-dateutil
+matrix-nio
