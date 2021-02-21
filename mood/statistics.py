@@ -8,7 +8,7 @@ from dateutil.relativedelta import relativedelta
 
 from .models import Status
 
-def moodstats(mindate=None, maxdate=None, days=7):
+def moodstats(user, mindate=None, maxdate=None, days=7):
     hv.extension('bokeh')
 
     maxdate = maxdate or timezone.now()
@@ -27,7 +27,7 @@ def moodstats(mindate=None, maxdate=None, days=7):
 
     pointdict = {"date": [], "value": [], "color": []}
 
-    for status in Status.objects.filter(timestamp__gte=mindate, timestamp__lte=maxdate):
+    for status in Status.objects.filter(user=user, timestamp__gte=mindate, timestamp__lte=maxdate):
         if status.mood:
             pointdict["date"].append(status.timestamp)
             pointdict["value"].append(status.mood.value)
@@ -48,6 +48,21 @@ def moodstats(mindate=None, maxdate=None, days=7):
     line = hv.Curve(pointtuples)
 
     output = points * line
-    output.opts(tools=["xwheel_zoom"])
+    output.opts(tools=["xwheel_zoom"], ylim=(0, 5))
+
+    return output
+
+def activitystats(user, mindate=None, maxdate=None, days=7):
+    maxdate = maxdate or timezone.now()
+    mindate = mindate or (maxdate - relativedelta(days=days))
+
+    output = {}
+
+    for status in Status.objects.filter(user=user, timestamp__gte=mindate, timestamp__lte=maxdate):
+        for activity in status.activity_set:
+            if activity in output.keys():
+                output[activity] += 1
+            else:
+                output[activity] = 1
 
     return output

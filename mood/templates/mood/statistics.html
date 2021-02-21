@@ -19,6 +19,31 @@
                                     </div>
                                 </div>
                             </div>
+
+                            <div class="col-xl-4 col-lg-5">
+                                <div class="card shadow mb-4">
+                                    <!-- Card Header - Dropdown -->
+                                    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                        <h6 class="m-0 font-weight-bold text-primary">Activities</h6>
+                                    </div>
+                                    <!-- Card Body -->
+                                    <div class="card-body">
+                                        <table>
+                                            <tr>
+                                                <th>Activity</th>
+                                                <th>Count</th>
+                                            </tr>
+                                            {% for activity, count in activities.items %}
+                                            <tr>
+                                                <td style="color:{{ activity.color }};"><i class="{{ activity.icon }}"></i><b> {{ activity }}</b></td>
+                                                <td style="text-align: right;">{{ count }}</td>
+                                            </tr>
+                                            {% endfor %}
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+
                         </div>
 
 {% endblock %}
