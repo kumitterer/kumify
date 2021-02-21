@@ -9,7 +9,7 @@ from django.utils.decorators import method_decorator
 
 from .models import Status, Activity, Mood, StatusMedia, StatusActivity
 from .forms import StatusForm
-from .statistics import moodstats
+from .statistics import moodstats, activitystats
 
 from common.helpers import get_upload_path
 from common.templatetags.images import hvhtml
@@ -330,8 +330,22 @@ class MoodStatisticsView(LoginRequiredMixin, TemplateView):
     template_name = "mood/statistics.html"
 
     def get_context_data(self, **kwargs):
+        startdate = self.request.GET.get("start")
+        enddate = self.request.GET.get("end")
+
+        if enddate:
+            maxdate = datetime.strptime(enddate, "%Y-%m-%d")
+        else:
+            maxdate = timezone.now()
+
+        if startdate:
+            mindate = datetime.strptime(startdate, "%Y-%m-%d")
+        else:
+            mindate = maxdate - relativedelta.relativedelta(weeks=1)
+
         context = super().get_context_data(**kwargs)
         context["title"] = "Statistics"
+        context["activities"] = activitystats(self.request.user, mindate, maxdate)
         return context
 
 class MoodCSVView(LoginRequiredMixin, View):
@@ -383,5 +397,5 @@ class MoodPlotView(LoginRequiredMixin, View):
         else:
             mindate = maxdate - relativedelta.relativedelta(weeks=1)
 
-        res.write(hvhtml(moodstats(mindate, maxdate)))
+        res.write(hvhtml(moodstats(request.user, mindate, maxdate)))
         return res
