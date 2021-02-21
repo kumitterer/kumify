@@ -1,14 +1,17 @@
-from django.views.generic import TemplateView, ListView, UpdateView, DetailView, CreateView, DeleteView
+from django.views.generic import TemplateView, ListView, UpdateView, DetailView, CreateView, DeleteView, View
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
+from django.utils import timezone
 
 from .models import Status, Activity, Mood, StatusMedia, StatusActivity
 from .forms import StatusForm
 
 from common.helpers import get_upload_path
 from msgio.models import NotificationDailySchedule, Notification
+
+from dateutil import relativedelta
 
 class StatusListView(LoginRequiredMixin, ListView):
     template_name = "mood/status_list.html"
@@ -316,3 +319,30 @@ class NotificationDeleteView(LoginRequiredMixin, DeleteView):
 
     def get_success_url(self):
         return reverse_lazy("mood:notification_list")
+
+class MoodStatisticsView(LoginRequiredMixin, TemplateView):
+    template_name = "mood/statistics.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["title"] = "Statistics"
+        context["scripts"] = ["frontend/vendor/d3/d3.min.js", "mood/statistics.js"]
+        context["styles"] = ["mood/statistics.css"]
+        return context
+
+class MoodCSVView(LoginRequiredMixin, View):
+    def get(self, request, *args, **kwargs):
+        res = HttpResponse(content_type="text/csv")
+        res["content-disposition"] = 'filename="mood.csv"'
+
+        maxage = timezone.now()
+        minage = maxage - relativedelta.relativedelta(weeks=1)
+
+        output = "date,value"
+
+        for status in Status.objects.filter(user=request.user, timestamp__gte=minage, timestamp__lte=maxage):
+            date = status.timestamp.strftime("%Y-%m-%d %H:%M")
+            output += f"\n{date},{status.mood.value}"
+
+        res.write(output)
+        return res
