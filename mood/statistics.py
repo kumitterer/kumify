@@ -6,7 +6,7 @@ from django.utils import timezone
 from bokeh.models import HoverTool
 from dateutil.relativedelta import relativedelta
 
-from .models import Status
+from .models import Status, Mood
 
 def moodstats(user, mindate=None, maxdate=None, days=7):
     hv.extension('bokeh')
@@ -26,6 +26,7 @@ def moodstats(user, mindate=None, maxdate=None, days=7):
     hover = HoverTool(tooltips=tooltips, formatters=formatters)
 
     pointdict = {"date": [], "value": [], "color": []}
+
 
     for status in Status.objects.filter(user=user, timestamp__gte=mindate, timestamp__lte=maxdate):
         if status.mood:
@@ -47,8 +48,10 @@ def moodstats(user, mindate=None, maxdate=None, days=7):
 
     line = hv.Curve(pointtuples)
 
+    maxy = Mood.objects.filter(user=user).latest("value").value + 1
+
     output = points * line
-    output.opts(tools=["xwheel_zoom"], ylim=(0, 5))
+    output.opts(tools=["xwheel_zoom"], ylim=(0, maxy))
 
     return output
 
