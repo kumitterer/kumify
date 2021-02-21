@@ -1,4 +1,6 @@
 {% extends "frontend/base.html" %}
+{% load images %}
+{% load request %}
 {% block "content" %}
 
                         <div class="row">
@@ -13,7 +15,7 @@
                                     </div>
                                     <!-- Card Body -->
                                     <div class="card-body">
-                                        <div id="my_dataviz"></div>
+                                        <iframe id="plot" src="plot/{% querystring %}" width="800px" height="450px"></iframe>
                                     </div>
                                 </div>
                             </div>

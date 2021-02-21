@@ -4,14 +4,20 @@ from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
 from django.http import HttpResponseRedirect, HttpResponse
 from django.utils import timezone
+from django.views.decorators.clickjacking import xframe_options_sameorigin
+from django.utils.decorators import method_decorator
 
 from .models import Status, Activity, Mood, StatusMedia, StatusActivity
 from .forms import StatusForm
+from .statistics import moodstats
 
 from common.helpers import get_upload_path
+from common.templatetags.images import hvhtml
 from msgio.models import NotificationDailySchedule, Notification
 
 from dateutil import relativedelta
+
+from datetime import datetime
 
 class StatusListView(LoginRequiredMixin, ListView):
     template_name = "mood/status_list.html"
@@ -326,8 +332,6 @@ class MoodStatisticsView(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["title"] = "Statistics"
-        context["scripts"] = ["frontend/vendor/d3/d3.min.js", "mood/statistics.js"]
-        context["styles"] = ["mood/statistics.css"]
         return context
 
 class MoodCSVView(LoginRequiredMixin, View):
@@ -335,14 +339,49 @@ class MoodCSVView(LoginRequiredMixin, View):
         res = HttpResponse(content_type="text/csv")
         res["content-disposition"] = 'filename="mood.csv"'
 
-        maxage = timezone.now()
-        minage = maxage - relativedelta.relativedelta(weeks=1)
+        startdate = request.GET.get("start")
+        enddate = request.GET.get("end")
+
+        if enddate:
+            maxdate = datetime.strptime(enddate, "%Y-%m-%d")
+        else:
+            maxdate = timezone.now()
+
+        if startdate:
+            mindate = datetime.strptime(startdate, "%Y-%m-%d")
+        else:
+            mindate = maxdate - relativedelta.relativedelta(weeks=1)
 
         output = "date,value"
 
-        for status in Status.objects.filter(user=request.user, timestamp__gte=minage, timestamp__lte=maxage):
-            date = status.timestamp.strftime("%Y-%m-%d %H:%M")
-            output += f"\n{date},{status.mood.value}"
+        for status in Status.objects.filter(user=request.user, timestamp__gte=mindate, timestamp__lte=maxdate):
+            if status.mood:
+                date = status.timestamp.strftime("%Y-%m-%d %H:%M")
+                output += f"\n{date},{status.mood.value}"
 
         res.write(output)
+        return res
+
+class MoodPlotView(LoginRequiredMixin, View):
+    @method_decorator(xframe_options_sameorigin)
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
+
+    def get(self, request, *args, **kwargs):
+        res = HttpResponse(content_type="text/html")
+
+        startdate = request.GET.get("start")
+        enddate = request.GET.get("end")
+
+        if enddate:
+            maxdate = datetime.strptime(enddate, "%Y-%m-%d")
+        else:
+            maxdate = timezone.now()
+
+        if startdate:
+            mindate = datetime.strptime(startdate, "%Y-%m-%d")
+        else:
+            mindate = maxdate - relativedelta.relativedelta(weeks=1)
+
+        res.write(hvhtml(moodstats(mindate, maxdate)))
         return res
