@@ -1,4 +1,4 @@
-from .views import StatusListView, StatusViewView, StatusDeleteView, StatusEditView, StatusCreateView, ActivityListView, ActivityEditView, ActivityCreateView, ActivityDeleteView, MoodListView, MoodEditView, NotificationCreateView, NotificationDeleteView, NotificationEditView, NotificationListView
+from .views import StatusListView, StatusViewView, StatusDeleteView, StatusEditView, StatusCreateView, ActivityListView, ActivityEditView, ActivityCreateView, ActivityDeleteView, MoodListView, MoodEditView, NotificationCreateView, NotificationDeleteView, NotificationEditView, NotificationListView, MoodStatisticsView, MoodCSVView
 
 from django.urls import path, include
 
@@ -20,4 +20,6 @@ urlpatterns = [
     path('notification/<int:id>/edit/', NotificationEditView.as_view(), name="notification_edit"),
     path('notification/<int:id>/delete/', NotificationDeleteView.as_view(), name="notification_delete"),
     path('notification/new/', NotificationCreateView.as_view(), name="notification_create"),
+    path('statistics/', MoodStatisticsView.as_view(), name="statistics"),
+    path('statistics/csv/', MoodCSVView.as_view(), name="statistics_csv"),
 ]
