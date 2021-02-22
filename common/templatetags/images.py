@@ -4,6 +4,10 @@ from io import BytesIO
 
 import holoviews as hv
 
+from bokeh.embed import file_html
+from bokeh.resources import INLINE
+from bokeh.models.tools import PanTool, WheelZoomTool
+
 import base64
 
 register = template.Library()
@@ -17,9 +21,15 @@ def pildata(image):
 
 @register.simple_tag
 def hvhtml(hvobject):
-    renderer = hv.renderer('bokeh')
-    html = renderer.html(hvobject, resources="inline")
+    bokeh = hv.render(hvobject)
 
+    pan_tool = bokeh.select(dict(type=PanTool))
+    pan_tool.dimensions = "width"
+
+    zoom_tool = bokeh.select(dict(type=WheelZoomTool))
+    zoom_tool.dimensions = "width"
+
+    html = file_html(bokeh, INLINE)
     html = html.replace("http://localhost:5006/static/extensions/panel/css", "/static/frontend/vendor/panel")
 
     return html
