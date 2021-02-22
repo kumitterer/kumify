@@ -55,6 +55,13 @@
                     <span>Notifications</span></a>
             </li>
 
+            <!-- Nav Item - Notification List -->
+            <li class="nav-item {% if title == "Statistics" %}active{% endif %}">
+                <a class="nav-link" href="{% url "mood:statistics" %}">
+                    <i class="fas fa-fw fa-smile"></i>
+                    <span>Statistics</span></a>
+            </li>
+
             <!-- Divider -->
             <hr class="sidebar-divider">
 
