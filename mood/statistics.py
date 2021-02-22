@@ -50,7 +50,7 @@ def moodstats(user, mindate=None, maxdate=None, days=7):
     line = hv.Curve(pointtuples)
 
     maxval = Mood.objects.filter(user=user).latest("value").value
-    maxy = maxval + min(maxval * 0.1, 1)
+    maxy = maxval + max(maxval * 0.1, 1)
 
     maxx = maxdate.timestamp() * 1000
     minx = maxx - (60*60*24*7) * 1000
