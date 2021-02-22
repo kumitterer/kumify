@@ -4,6 +4,7 @@ import pandas as pd
 from django.utils import timezone
 
 from bokeh.models import HoverTool
+from holoviews.operation import timeseries
 from dateutil.relativedelta import relativedelta
 
 from .models import Status, Mood
@@ -28,7 +29,7 @@ def moodstats(user, mindate=None, maxdate=None, days=7):
     pointdict = {"date": [], "value": [], "color": []}
 
 
-    for status in Status.objects.filter(user=user, timestamp__gte=mindate, timestamp__lte=maxdate):
+    for status in Status.objects.filter(user=user):
         if status.mood:
             pointdict["date"].append(status.timestamp)
             pointdict["value"].append(status.mood.value)
@@ -48,10 +49,14 @@ def moodstats(user, mindate=None, maxdate=None, days=7):
 
     line = hv.Curve(pointtuples)
 
-    maxy = Mood.objects.filter(user=user).latest("value").value + 1
+    maxval = Mood.objects.filter(user=user).latest("value").value
+    maxy = maxval + min(maxval * 0.1, 1)
 
-    output = points * line
-    output.opts(tools=["xwheel_zoom"], ylim=(0, maxy))
+    maxx = maxdate.timestamp() * 1000
+    minx = maxx - (60*60*24*7) * 1000
+
+    output = points * line * timeseries.rolling(line, rolling_window=7)
+    output.opts(ylim=(0, maxy), xlim=(minx, maxx))
 
     return output
 
