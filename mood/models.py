@@ -20,6 +20,9 @@ class Mood(models.Model):
         return self.name
 
 class Status(models.Model):
+    class Meta:
+        ordering = ["timestamp"]
+
     user = models.ForeignKey(get_user_model(), models.CASCADE)
     timestamp = models.DateTimeField(default=timezone.now)
     mood = models.ForeignKey(Mood, models.SET_NULL, null=True)
