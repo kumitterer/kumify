@@ -42,8 +42,7 @@ def moodstats(user, mindate=None, maxdate=None, days=7):
     points.opts(
         tools=[hover], color='color', cmap='Category20',
         line_color='black', size=25,
-        width=600, height=400, show_grid=True,
-        title='Your Mood Entries')
+        width=600, height=400, show_grid=True)
 
     pointtuples = [(pointdict["date"][i], pointdict["value"][i]) for i in range(len(pointdict["date"]))]
 
@@ -66,11 +65,25 @@ def activitystats(user, mindate=None, maxdate=None, days=7):
 
     output = {}
 
-    for status in Status.objects.filter(user=user, timestamp__gte=mindate, timestamp__lte=maxdate):
+    for status in Status.objects.filter(user=user):
         for activity in status.activity_set:
-            if activity in output.keys():
-                output[activity] += 1
-            else:
-                output[activity] = 1
+            if not activity in output.keys():
+                output[activity] = {
+                    "alltime": 0,
+                    "yearly": 0,
+                    "monthly": 0,
+                    "weekly": 0
+                }
+
+            output[activity]["alltime"] += 1
+
+            if status.timestamp > timezone.now() - relativedelta(years=1):
+                output[activity]["yearly"] += 1
+
+            if status.timestamp > timezone.now() - relativedelta(months=1):
+                output[activity]["monthly"] += 1
+
+            if status.timestamp > timezone.now() - relativedelta(weeks=1):
+                output[activity]["weekly"] += 1
 
     return output
