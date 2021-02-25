@@ -31,12 +31,16 @@
                                         <table>
                                             <tr>
                                                 <th>Activity</th>
-                                                <th>Count</th>
+                                                <th>7 days</th>
+                                                <th>1 month</th>
+                                                <th>1 year</th>
                                             </tr>
-                                            {% for activity, count in activities.items %}
+                                            {% for activity, counts in activities.items %}
                                             <tr>
                                                 <td style="color:{{ activity.color }};"><i class="{{ activity.icon }}"></i><b> {{ activity }}</b></td>
-                                                <td style="text-align: right;">{{ count }}</td>
+                                                <td style="text-align: right;">{{ counts.weekly }}</td>
+                                                <td style="text-align: right;">{{ counts.monthly }}</td>
+                                                <td style="text-align: right;">{{ counts.yearly }}</td>
                                             </tr>
                                             {% endfor %}
                                         </table>
