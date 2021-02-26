@@ -9,11 +9,8 @@ from dateutil.relativedelta import relativedelta
 
 from .models import Status, Mood
 
-def moodstats(user, mindate=None, maxdate=None, days=7):
+def moodstats(user):
     hv.extension('bokeh')
-
-    maxdate = maxdate or timezone.now()
-    mindate = mindate or (maxdate - relativedelta(days=days))
 
     tooltips = [
     ('Date', '@date{%F %H:%M}'),
@@ -60,9 +57,6 @@ def moodstats(user, mindate=None, maxdate=None, days=7):
     return output
 
 def activitystats(user):
-    maxdate = maxdate or timezone.now()
-    mindate = mindate or (maxdate - relativedelta(days=days))
-
     output = {}
 
     for status in Status.objects.filter(user=user):

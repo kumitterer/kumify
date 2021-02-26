@@ -356,14 +356,23 @@ class MoodCSVView(LoginRequiredMixin, View):
         startdate = request.GET.get("start")
         enddate = request.GET.get("end")
 
+        maxdate = None
+        mindate = None
+
         if enddate:
             maxdate = datetime.strptime(enddate, "%Y-%m-%d")
-        else:
-            maxdate = timezone.now()
+
+            if not startdate:
+                mindate = maxdate - relativedelta.relativedelta(weeks=1)
 
         if startdate:
             mindate = datetime.strptime(startdate, "%Y-%m-%d")
-        else:
+
+            if not enddate:
+                maxdate = mindate + relativedelta.relativedelta(weeks=1)
+
+        if not maxdate:
+            maxdate = timezone.now()
             mindate = maxdate - relativedelta.relativedelta(weeks=1)
 
         output = "date,value"
