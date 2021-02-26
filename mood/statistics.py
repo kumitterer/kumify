@@ -59,7 +59,7 @@ def moodstats(user, mindate=None, maxdate=None, days=7):
 
     return output
 
-def activitystats(user, mindate=None, maxdate=None, days=7):
+def activitystats(user):
     maxdate = maxdate or timezone.now()
     mindate = mindate or (maxdate - relativedelta(days=days))
 
