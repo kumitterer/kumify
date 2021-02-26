@@ -406,5 +406,5 @@ class MoodPlotView(LoginRequiredMixin, View):
         else:
             mindate = maxdate - relativedelta.relativedelta(weeks=1)
 
-        res.write(hvhtml(moodstats(request.user, mindate, maxdate)))
+        res.write(hvhtml(moodstats(request.user)))
         return res
