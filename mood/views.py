@@ -345,7 +345,7 @@ class MoodStatisticsView(LoginRequiredMixin, TemplateView):
 
         context = super().get_context_data(**kwargs)
         context["title"] = "Statistics"
-        context["activities"] = activitystats(self.request.user, mindate, maxdate)
+        context["activities"] = activitystats(self.request.user)
         return context
 
 class MoodCSVView(LoginRequiredMixin, View):
