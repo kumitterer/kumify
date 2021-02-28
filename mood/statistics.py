@@ -48,7 +48,7 @@ def moodstats(user):
     maxval = Mood.objects.filter(user=user).latest("value").value
     maxy = maxval + max(maxval * 0.1, 1)
 
-    maxx = maxdate.timestamp() * 1000
+    maxx = timezone.now().timestamp() * 1000
     minx = maxx - (60*60*24*7) * 1000
 
     output = points * line * timeseries.rolling(line, rolling_window=7)
