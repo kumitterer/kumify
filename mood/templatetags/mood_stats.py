@@ -35,6 +35,9 @@ def current_streak(context):
 
 @register.simple_tag(takes_context=True)
 def closest_mood(context, value):
+    if not value:
+        return None
+
     mood_list = context["user"].mood_set.all()
 
     found = None
@@ -85,6 +88,9 @@ def most_common_activity(context, start, end=None):
     for status in status_list:
         for activity in status.statusactivity_set.all():
             activities.append(activity.activity)
+
+    if not activities:
+        return None
 
     most_common = Counter(activities).most_common(1)[0]
 
