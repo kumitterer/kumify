@@ -16,6 +16,6 @@ python-telegram-bot
 python-dateutil
 matrix-nio
 holoviews
-bokeh
+bokeh<2.3.0
 panel
 scipy
