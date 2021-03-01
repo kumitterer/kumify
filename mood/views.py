@@ -9,10 +9,10 @@ from django.utils.decorators import method_decorator
 
 from .models import Status, Activity, Mood, StatusMedia, StatusActivity
 from .forms import StatusForm
-from .statistics import moodstats, activitystats
+from .statistics import moodstats, activitystats, moodpies
 
 from common.helpers import get_upload_path
-from common.templatetags.images import hvhtml
+from common.templatetags.images import hvhtml, bkhtml
 from msgio.models import NotificationDailySchedule, Notification
 
 from dateutil import relativedelta
@@ -393,18 +393,16 @@ class MoodPlotView(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
         res = HttpResponse(content_type="text/html")
 
-        startdate = request.GET.get("start")
-        enddate = request.GET.get("end")
-
-        if enddate:
-            maxdate = datetime.strptime(enddate, "%Y-%m-%d")
-        else:
-            maxdate = timezone.now()
-
-        if startdate:
-            mindate = datetime.strptime(startdate, "%Y-%m-%d")
-        else:
-            mindate = maxdate - relativedelta.relativedelta(weeks=1)
-
         res.write(hvhtml(moodstats(request.user)))
+        return res
+
+class MoodPiesView(LoginRequiredMixin, View):
+    @method_decorator(xframe_options_sameorigin)
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
+
+    def get(self, request, *args, **kwargs):
+        res = HttpResponse(content_type="text/html")
+
+        res.write(bkhtml(moodpies(request.user)))
         return res
