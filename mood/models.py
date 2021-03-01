@@ -10,6 +10,9 @@ from colorfield.fields import ColorField
 from common.helpers import get_upload_path
 
 class Mood(models.Model):
+    class Meta:
+        ordering = ["-value"]
+
     user = models.ForeignKey(get_user_model(), models.CASCADE)
     name = models.CharField(max_length=64)
     icon = models.CharField(default="fas fa-star", max_length=64)

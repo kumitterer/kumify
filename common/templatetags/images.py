@@ -20,19 +20,22 @@ def pildata(image):
     return f"data:img/jpeg;base64,{content}"
 
 @register.simple_tag
-def hvhtml(hvobject):
-    bokeh = hv.render(hvobject)
+def bkhtml(bkobject, lock_y=False):
+    if lock_y:
+        pan_tool = bkobject.select(dict(type=PanTool))
+        pan_tool.dimensions = "width"
 
-    pan_tool = bokeh.select(dict(type=PanTool))
-    pan_tool.dimensions = "width"
+        zoom_tool = bkobject.select(dict(type=WheelZoomTool))
+        zoom_tool.dimensions = "width"
 
-    zoom_tool = bokeh.select(dict(type=WheelZoomTool))
-    zoom_tool.dimensions = "width"
-
-    html = file_html(bokeh, INLINE)
+    html = file_html(bkobject, INLINE)
     html = html.replace("http://localhost:5006/static/extensions/panel/css", "/static/frontend/vendor/panel")
 
-    return html
+    return html   
+
+@register.simple_tag
+def hvhtml(hvobject, lock_y=True):
+    return bkhtml(hv.render(hvobject), lock_y)
     
 @register.simple_tag
 def hvdata(hvobject):
