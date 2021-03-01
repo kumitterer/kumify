@@ -13,10 +13,10 @@ from ..models import GatewayUser
 from ..helpers import run_filters
 
 class MatrixDispatcher:
-    def __init__(self, username=dbsettings.MATRIX_USERNAME, password=dbsettings.MATRIX_PASSWORD, homeserver=dbsettings.MATRIX_HOMESERVER):
-        self.username = username
-        self.password = password
-        self.homeserver = homeserver
+    def __init__(self, username=None, password=None, homeserver=None):
+        self.username = username or dbsettings.MATRIX_USERNAME
+        self.password = password or dbsettings.MATRIX_PASSWORD
+        self.homeserver = homeserver or dbsettings.MATRIX_HOMESERVER
 
     async def send(self, message, room_id):
         client = AsyncClient(self.homeserver, self.username)

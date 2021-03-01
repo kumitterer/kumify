@@ -16,7 +16,8 @@ class TelegramWebhookView(View):
         pass # TODO: Implement webhook receiver and management tool
 
 class TelegramDispatcher:
-    def __init__(self, token=dbsettings.TELEGRAM_TOKEN):
+    def __init__(self, token=None):
+        token = token or dbsettings.TELEGRAM_TOKEN
         self.bot = telegram.Bot(token=token)
 
     def send(self, message, chat_id):
