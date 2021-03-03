@@ -46,7 +46,7 @@
                                                 <th>1 year</th>
                                             </tr>
                                             {% for activity, counts in activities.items %}
-                                            <tr>
+                                            <tr onclick="window.location.href='activity/{{ activity.id }}/'">
                                                 <td style="color:{{ activity.color }};"><i class="{{ activity.icon }}"></i><b> {{ activity }}</b></td>
                                                 <td style="text-align: right;">{{ counts.weekly }}</td>
                                                 <td style="text-align: right;">{{ counts.monthly }}</td>
