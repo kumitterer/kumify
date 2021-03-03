@@ -9,7 +9,7 @@ from django.utils.decorators import method_decorator
 
 from .models import Status, Activity, Mood, StatusMedia, StatusActivity
 from .forms import StatusForm
-from .statistics import moodstats, activitystats, moodpies
+from .statistics import moodstats, activitystats, moodpies, activitymood, activitypies
 
 from common.helpers import get_upload_path
 from common.templatetags.images import hvhtml, bkhtml
@@ -405,4 +405,35 @@ class MoodPiesView(LoginRequiredMixin, View):
         res = HttpResponse(content_type="text/html")
 
         res.write(bkhtml(moodpies(request.user)))
+        return res
+
+class ActivityStatisticsView(LoginRequiredMixin, TemplateView):
+    template_name = "mood/statistics_activity.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        activity = get_object_or_404(Activity, user=self.request.user, id=kwargs["id"])
+        context["title"] = "Activity Statistics for %s" % activity.name
+        return context
+
+class ActivityPlotView(LoginRequiredMixin, View):
+    @method_decorator(xframe_options_sameorigin)
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
+
+    def get(self, request, *args, **kwargs):
+        res = HttpResponse(content_type="text/html")
+
+        res.write(hvhtml(activitymood(get_object_or_404(Activity, user=request.user, id=kwargs["id"]))))
+        return res
+
+class ActivityPiesView(LoginRequiredMixin, View):
+    @method_decorator(xframe_options_sameorigin)
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
+
+    def get(self, request, *args, **kwargs):
+        res = HttpResponse(content_type="text/html")
+
+        res.write(bkhtml(activitypies(get_object_or_404(Activity, user=request.user, id=kwargs["id"]))))
         return res

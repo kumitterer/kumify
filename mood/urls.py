@@ -1,4 +1,4 @@
-from .views import StatusListView, StatusViewView, StatusDeleteView, StatusEditView, StatusCreateView, ActivityListView, ActivityEditView, ActivityCreateView, ActivityDeleteView, MoodListView, MoodEditView, NotificationCreateView, NotificationDeleteView, NotificationEditView, NotificationListView, MoodStatisticsView, MoodCSVView, MoodPlotView, MoodPiesView
+from .views import StatusListView, StatusViewView, StatusDeleteView, StatusEditView, StatusCreateView, ActivityListView, ActivityEditView, ActivityCreateView, ActivityDeleteView, MoodListView, MoodEditView, NotificationCreateView, NotificationDeleteView, NotificationEditView, NotificationListView, MoodStatisticsView, MoodCSVView, MoodPlotView, MoodPiesView, ActivityStatisticsView, ActivityPlotView, ActivityPiesView
 
 from django.urls import path, include
 
@@ -24,4 +24,7 @@ urlpatterns = [
     path('statistics/csv/', MoodCSVView.as_view(), name="statistics_csv"),
     path('statistics/plot/', MoodPlotView.as_view(), name="statistics_plot"),
     path('statistics/pies/', MoodPiesView.as_view(), name="statistics_pies"),
+    path('statistics/activity/<int:id>/', ActivityStatisticsView.as_view(), name="statistics_activity"),
+    path('statistics/activity/<int:id>/plot/', ActivityPlotView.as_view(), name="statistics_activity_plot"),
+    path('statistics/activity/<int:id>/pies/', ActivityPiesView.as_view(), name="statistics_activity_pies"),
 ]
