@@ -53,6 +53,9 @@ class ActivityCategory(models.Model):
         return self.name
 
 class Activity(models.Model):
+    class Meta:
+        ordering = ["name"]
+
     user = models.ForeignKey(get_user_model(), models.CASCADE)
     name = models.CharField(max_length=64)
     icon = models.CharField(default="fas fa-check", max_length=64)
