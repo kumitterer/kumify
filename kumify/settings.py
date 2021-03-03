@@ -1,3 +1,8 @@
+# You shouldn't have to change anything in here, ever.
+# Use localsettings.py in the project's root directory instead.
+
+# If you make any changes in here, you may have trouble updating your Kumify installation.
+
 from pathlib import Path
 
 from localsettings import *
@@ -6,6 +11,15 @@ from localsettings import *
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Application definition
+
+ENABLED_MODULES = [
+    'cbt',
+    'dreams',
+    'health',
+    'friends',
+    'habits',
+    'mood',
+]
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -19,15 +33,9 @@ INSTALLED_APPS = [
     'dbsettings',
     'common',
     'frontend',
-    'mood',
     'msgio',
     'cronhandler',
-    'cbt',
-    'dreams',
-    'health',
-    'friends',
-    'habits',
-]
+] + ENABLED_MODULES
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
