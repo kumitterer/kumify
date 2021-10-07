@@ -49,3 +49,7 @@
 [_] Fix sidebar highlighting for pages with same name
 [_] Move dashboard components to module templates
 [_] Fix buttons on mobile devices
+
+## environment module
+
+[_] CO2 accounting
