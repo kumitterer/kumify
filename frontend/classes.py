@@ -7,6 +7,9 @@ class NavSection:
     def add_item(self, item):
         self.items.append(item)
 
+    def get_html(self):
+        pass
+
 class NavItem:
     def __init__(self, name, url, icon="fas fa-fw fa-smile", title=None):
         self.name = name
