@@ -12,13 +12,23 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Application definition
 
-ENABLED_MODULES = [
-    'cbt',
-    'dreams',
-    'health',
-    'friends',
-    'habits',
-    'mood',
+try:
+    ENABLED_MODULES
+except NameError:
+    ENABLED_MODULES = [
+        'cbt',
+        'dreams',
+        'health',
+        'friends',
+        'habits',
+        'mood',
+    ]
+
+CORE_MODULES = [
+    'common',
+    'frontend',
+    'msgio',
+    'cronhandler',
 ]
 
 INSTALLED_APPS = [
@@ -31,11 +41,7 @@ INSTALLED_APPS = [
     'colorfield',
     'multiselectfield',
     'dbsettings',
-    'common',
-    'frontend',
-    'msgio',
-    'cronhandler',
-] + ENABLED_MODULES
+] + CORE_MODULES + ENABLED_MODULES
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

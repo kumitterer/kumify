@@ -6,11 +6,6 @@
 [_] Allow configuration as single user instance
 [_] User profiles / names / gateway config / time zone settings
 
-## mood module
-
-[_] Missing mood views
-[_] Statistics / graphs
-
 ## cbt module
 
 [_] Complete thought record creation
@@ -20,14 +15,7 @@
 ## msgio module
 
 [_] Implement Telegram webhooks
-
-## dreams module
-
-[x] New dream page
-[x] Edit dream page
-[x] Delete dream page
-[x] Statistics / template tags
-[_] Check for copy-paste errors in pages
+[_] Implement Matrix messaging
 
 ## meds module
 

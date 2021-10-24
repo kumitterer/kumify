@@ -1,9 +1,20 @@
 from django import template
+from django.conf import settings
+
+from importlib import import_module
 
 register = template.Library()
 
 @register.simple_tag
 def sidebar_nav():
+    sections = []
+
+    for module in settings.CORE_MODULES + settings.ENABLED_MODULES:
+        try:
+            features = import_module(f"{module}.features")
+        except:
+            pass
+
     return """
             <li class="nav-item {% if title == "Dashboard" %}active{% endif %}">
                 <a class="nav-link" href="{% url "frontend:dashboard" %}">
