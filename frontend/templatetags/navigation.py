@@ -28,4 +28,7 @@ def sidebar_nav():
 
             <!-- Divider -->
             <hr class="sidebar-divider">
-    """ + section.get_html() for section in sections
+    """ + """
+            <!-- Divider -->
+            <hr class="sidebar-divider">
+    """.join([section.get_html() for section in sections])
