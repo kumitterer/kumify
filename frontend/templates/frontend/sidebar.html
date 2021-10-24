@@ -14,7 +14,7 @@
             <!-- Divider -->
             <hr class="sidebar-divider my-0">
 
-            {% sidebar_nav %}
+            {% autoescape off %}{% sidebar_nav %}{% endautoescape %}
 
             <!-- Divider -->
             <hr class="sidebar-divider d-none d-md-block">
