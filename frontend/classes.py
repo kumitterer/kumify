@@ -18,7 +18,7 @@ class NavSection:
         for item in self.items:
             html += f"""
             <!-- Nav Item -->
-            <li class="nav-item """ + ("active" if item.name == active else "") + f""">
+            <li class="nav-item""" + (" active" if item.name == active else "") + f"""">
                 <a class="nav-link" href="{item.url}">
                     <i class="{item.icon}"></i>
                     <span>{item.name}</span>
