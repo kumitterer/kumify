@@ -3,7 +3,6 @@
 ## General
 
 [_] Make sure users can't access other users' data
-[_] Allow configuration as single user instance
 [_] User profiles / names / gateway config / time zone settings
 
 ## cbt module
@@ -17,7 +16,7 @@
 [_] Implement Telegram webhooks
 [_] Implement Matrix messaging
 
-## meds module
+## health module
 
 [_] Implement medication tracker
 [_] Implement supply / refill system
@@ -32,11 +31,7 @@
 
 ## Frontend
 
-[_] Better icons for sidebar items
-[_] Sidebar auto-generation (?)
-[_] Fix sidebar highlighting for pages with same name
-[_] Move dashboard components to module templates
-[_] Fix buttons on mobile devices
+[_] Fix buttons on mobile devices (?)
 
 ## environment module
 

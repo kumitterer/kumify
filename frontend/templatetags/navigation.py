@@ -1,5 +1,6 @@
 from django import template
 from django.conf import settings
+from django.urls import reverse_lazy
 
 from importlib import import_module
 
@@ -20,8 +21,8 @@ def sidebar_nav():
             pass
 
     return """
-            <li class="nav-item {% if title == "Dashboard" %}active{% endif %}">
-                <a class="nav-link" href="{% url "frontend:dashboard" %}">
+            <li class="nav-item">
+                <a class="nav-link" href=\"""" +  reverse_lazy("frontend:dashboard") + """\">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Dashboard</span></a>
             </li>
