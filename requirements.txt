@@ -5,8 +5,8 @@ django-colorfield
 django-multiupload
 django-storages
 django-polymorphic
-django-multiselectfield
-git+git://github.com/Chive/django-multiupload.git@ba52e161a68ce19062c3655e89544c2d377990a0#egg=multiupload
+git+https://kumig.it/kumitterer/django-multiselectfield.git
+git+https://github.com/Chive/django-multiupload.git#egg=django-multiupload
 dbsettings
 django-filtersignals
 mysqlclient
