@@ -1,12 +1,10 @@
-django
 django[argon2]
-django[mysql]
 django-colorfield
 django-multiupload
 django-storages
 django-polymorphic
 git+https://kumig.it/kumitterer/django-multiselectfield.git
-git+https://github.com/Chive/django-multiupload.git#egg=django-multiupload
+git+https://github.com/Chive/django-multiupload.git
 dbsettings
 django-filtersignals
 mysqlclient
@@ -20,3 +18,4 @@ bokeh
 panel
 scipy
 channels
+django-autosecretkey
