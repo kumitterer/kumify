@@ -19,3 +19,4 @@ panel
 scipy
 channels
 django-autosecretkey
+mozilla-django-oidc
