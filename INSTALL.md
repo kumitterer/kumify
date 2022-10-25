@@ -14,7 +14,7 @@ This project was tested with Python 3.8.6 on an Ubuntu Linux host. It should the
 
 ### Basic configuration
 
-Any configuration you have to do takes place in a localsettings.py file in the project's root directory. Copy the provided localsettings.dist.py to localsettings.py and make any modifications you may need. The options are documented within that file.
+Any configuration you have to do takes place in a settings.ini file in the project's root directory. Copy the provided settings.dist.ini to settings.ini and make any modifications you may need. The options are documented within that file.
 
 ### Prepare database
 
