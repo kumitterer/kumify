@@ -1,4 +1,5 @@
 {% extends "registration/base.html" %}
+{% load oidc %}
 
 {% block content %}
 <div class="p-5">
@@ -19,7 +20,13 @@
         <button type="submit" class="btn btn-primary btn-user btn-block">
             Login
         </button>
-        <hr>
+        {% use_oidc as use_oidc %}
+        {% if use_oidc %}
+        <div style="text-align: center;">or</div>
+        <a href="{% url 'oidc_authentication_init' %}" class="btn btn-success btn-user btn-block">
+            Login via {% oidc_provider %}
+        </a>
+        {% endif %}
     </form>
     <hr>
     <div class="text-center">

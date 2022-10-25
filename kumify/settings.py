@@ -1,19 +1,28 @@
 # You shouldn't have to change anything in here, ever.
-# Use localsettings.py in the project's root directory instead.
+# Use settings.ini in the project's root directory instead.
 
 # If you make any changes in here, you may have trouble updating your Kumify installation.
 
 from pathlib import Path
 
-from localsettings import *
+from autosecretkey import AutoSecretKey
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+CONFIG_FILE = AutoSecretKey(BASE_DIR / "settings.ini")
+
+SECRET_KEY = CONFIG_FILE.secret_key
+DEBUG = CONFIG_FILE.config.getboolean("KUMIFY", "Debug", fallback=False)
+
+ALLOWED_HOSTS = [CONFIG_FILE.config.get("KUMIFY", "Host")]
+CSRF_TRUSTED_ORIGINS = [f"https://{ALLOWED_HOSTS[0]}"]
+
+TIME_ZONE = CONFIG_FILE.config.get("KUMIFY", "TimeZone", fallback="UTC")
 
 # Application definition
 
 try:
-    ENABLED_MODULES
+    ENABLED_MODULES # TODO: Move this to settings.ini
 except NameError:
     ENABLED_MODULES = [
         'cbt',
@@ -42,6 +51,7 @@ INSTALLED_APPS = [
     'colorfield',
     'multiselectfield',
     'dbsettings',
+    'mozilla_django_oidc',
 ] + CORE_MODULES + ENABLED_MODULES
 
 MIDDLEWARE = [
@@ -76,29 +86,39 @@ WSGI_APPLICATION = 'kumify.wsgi.application'
 
 
 # Database
-# https://docs.djangoproject.com/en/3.1/ref/settings/#databases
+# https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.contrib.gis.db.backends.spatialite',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    } if not DB_HOST else {
-        'ENGINE': 'django.contrib.gis.db.backends.mysql',
-        'NAME': DB_NAME,
-        'USER': DB_USER,
-        'PASSWORD': DB_PASS,
-        'HOST': DB_HOST,
-        'PORT': DB_PORT,
-        'OPTIONS': {
-            'charset': 'utf8mb4',
-            'sql_mode': 'traditional',
+if "MySQL" in CONFIG_FILE.config:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.contrib.gis.db.backends.mysql',
+            'NAME': CONFIG_FILE.config.get("MySQL", "Database"),
+            'USER': CONFIG_FILE.config.get("MySQL", "Username"),
+            'PASSWORD': CONFIG_FILE.config.get("MySQL", "Password"),
+            'HOST': CONFIG_FILE.config.get("MySQL", "Host", fallback="localhost"),
+            'PORT': CONFIG_FILE.config.getint("MySQL", "Port", fallback=3306),
+            'OPTIONS': {
+                'charset': 'utf8mb4',
+                'sql_mode': 'traditional',
+            }
         }
     }
-}
+
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.contrib.gis.db.backends.spatialite',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
 
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
+
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+]
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -135,15 +155,48 @@ USE_TZ = True
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
+
 # Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/3.1/howto/static-files/
+# https://docs.djangoproject.com/en/4.0/howto/static-files/
 
 STATIC_URL = '/static/'
 
-STATIC_ROOT = None if DEBUG else STATIC_ROOT
+STATIC_ROOT = None if DEBUG else CONFIG_FILE.config.get("KUMIFY", "StaticRoot", fallback=BASE_DIR / "static")
 
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = "/"
 
-DEFAULT_FILE_STORAGE = 'django.core.files.storage.FileSystemStorage' if not AWS_ACCESS_KEY_ID else 'storages.backends.s3boto3.S3Boto3Storage'
-STATICFILES_STORAGE = 'storages.backends.s3boto3.S3StaticStorage' if AWS_ACCESS_KEY_ID else 'django.contrib.staticfiles.storage.StaticFilesStorage'
+if "S3" in CONFIG_FILE.config:
+    DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+    STATICFILES_STORAGE = 'storages.backends.s3boto3.S3StaticStorage'
+    AWS_ACCESS_KEY_ID = CONFIG_FILE.config.get("S3", "AccessKey")
+    AWS_SECRET_ACCESS_KEY = CONFIG_FILE.config.get("S3", "SecretKey")
+    AWS_STORAGE_BUCKET_NAME = CONFIG_FILE.config.get("S3", "Bucket")
+    AWS_S3_ENDPOINT_URL = CONFIG_FILE.config.get("S3", "Endpoint")
+
+
+# OpenID Connect
+# https://mozilla-django-oidc.readthedocs.io/
+
+USE_OIDC = False
+
+if "OIDC" in CONFIG_FILE.config:
+    USE_OIDC = True
+
+    OIDC_PROVIDER_NAME = CONFIG_FILE.config.get("OIDC", "ProviderName", fallback="OpenID Connect")
+
+    AUTHENTICATION_BACKENDS.append('mozilla_django_oidc.auth.OIDCAuthenticationBackend')
+
+    OIDC_RP_CLIENT_ID = CONFIG_FILE.config.get("OIDC", "ClientID")
+    OIDC_RP_CLIENT_SECRET = CONFIG_FILE.config.get("OIDC", "ClientSecret")
+
+    if (opsk := CONFIG_FILE.config.get("OIDC", "OPSignKey", fallback="")):
+        OIDC_RP_SIGN_ALGO = "RS256"
+        OIDC_RP_IDP_SIGN_KEY = opsk
+    elif (jwks := CONFIG_FILE.config.get("OIDC", "JWKSEndpoint", fallback="")):
+        OIDC_RP_SIGN_ALGO = "RS256"
+        OIDC_OP_JWKS_ENDPOINT = jwks
+
+    OIDC_OP_AUTHORIZATION_ENDPOINT = CONFIG_FILE.config.get("OIDC", "AuthorizationEndpoint")
+    OIDC_OP_TOKEN_ENDPOINT = CONFIG_FILE.config.get("OIDC", "TokenEndpoint")
+    OIDC_OP_USER_ENDPOINT = CONFIG_FILE.config.get("OIDC", "UserInfoEndpoint")

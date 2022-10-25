@@ -26,5 +26,6 @@ urlpatterns = [
     path('cron/', include("cronhandler.urls", "cron")),
     path('webhooks/telegram/', TelegramWebhookView.as_view()),
     path('dreams/', include("dreams.urls", "dreams")),
-    path('gpslog/', include("gpslog.urls"))
+    path('gpslog/', include("gpslog.urls")),
+    path('oidc/', include('mozilla_django_oidc.urls')),
 ]
