@@ -22,7 +22,7 @@ TIME_ZONE = CONFIG_FILE.config.get("KUMIFY", "TimeZone", fallback="UTC")
 # Application definition
 
 try:
-    ENABLED_MODULES # TODO: Move this to settings.ini
+    ENABLED_MODULES  # TODO: Move this to settings.ini
 except NameError:
     ENABLED_MODULES = [
         'cbt',
@@ -161,7 +161,8 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 STATIC_URL = '/static/'
 
-STATIC_ROOT = None if DEBUG else CONFIG_FILE.config.get("KUMIFY", "StaticRoot", fallback=BASE_DIR / "static")
+STATIC_ROOT = None if DEBUG else CONFIG_FILE.config.get(
+    "KUMIFY", "StaticRoot", fallback=BASE_DIR / "static")
 
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = "/"
@@ -183,9 +184,11 @@ USE_OIDC = False
 if "OIDC" in CONFIG_FILE.config:
     USE_OIDC = True
 
-    OIDC_PROVIDER_NAME = CONFIG_FILE.config.get("OIDC", "ProviderName", fallback="OpenID Connect")
+    OIDC_PROVIDER_NAME = CONFIG_FILE.config.get(
+        "OIDC", "ProviderName", fallback="OpenID Connect")
 
-    AUTHENTICATION_BACKENDS.append('mozilla_django_oidc.auth.OIDCAuthenticationBackend')
+    AUTHENTICATION_BACKENDS.append(
+        'mozilla_django_oidc.auth.OIDCAuthenticationBackend')
 
     OIDC_RP_CLIENT_ID = CONFIG_FILE.config.get("OIDC", "ClientID")
     OIDC_RP_CLIENT_SECRET = CONFIG_FILE.config.get("OIDC", "ClientSecret")
@@ -197,6 +200,10 @@ if "OIDC" in CONFIG_FILE.config:
         OIDC_RP_SIGN_ALGO = "RS256"
         OIDC_OP_JWKS_ENDPOINT = jwks
 
-    OIDC_OP_AUTHORIZATION_ENDPOINT = CONFIG_FILE.config.get("OIDC", "AuthorizationEndpoint")
+    OIDC_OP_AUTHORIZATION_ENDPOINT = CONFIG_FILE.config.get(
+        "OIDC", "AuthorizationEndpoint")
     OIDC_OP_TOKEN_ENDPOINT = CONFIG_FILE.config.get("OIDC", "TokenEndpoint")
     OIDC_OP_USER_ENDPOINT = CONFIG_FILE.config.get("OIDC", "UserInfoEndpoint")
+
+    OIDC_CREATE_USER = CONFIG_FILE.config.get(
+        "OIDC", "CreateUsers", fallback=False)
