@@ -53,6 +53,6 @@ To set up the Telegram integration, create a new bot by talking to the @BotFathe
 
 ```python3 manage.py telegram```
 
-If you wish to receive incoming messages through the Telegram gateway, your server must be reachable from the Internet. Configure a public IP/domain name as well as an HTTPS certificate, then run:
+~~If you wish to receive incoming messages through the Telegram gateway, your server must be reachable from the Internet. Configure a public IP/domain name as well as an HTTPS certificate, then run:~~
 
-```python3 manage.py telegramwebhook```
+~~```python3 manage.py telegramwebhook```~~
