@@ -160,7 +160,7 @@ def moodpies(user):
         end_angle=cumsum("angle"),
         line_color="white",
         fill_color="color",
-        legend="mood",
+        legend_label="mood",
         source=weekly_data,
     )
 
