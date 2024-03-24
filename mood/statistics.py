@@ -123,7 +123,7 @@ def moodpies(user):
     weekly_data['angle'] = weekly_data['value']/weekly_data['value'].sum() * 2*pi
     weekly_data['color'] = colors
 
-    weekly_chart = figure(plot_height=350, title="Weekly", toolbar_location=None,
+    weekly_chart = figure(height=350, title="Weekly", toolbar_location=None,
             tools="hover", tooltips="@mood: @value")
     weekly_chart.axis.visible = False
 
@@ -135,7 +135,7 @@ def moodpies(user):
     monthly_data['angle'] = monthly_data['value']/monthly_data['value'].sum() * 2*pi
     monthly_data['color'] = colors
 
-    monthly_chart = figure(plot_height=350, title="Monthly", toolbar_location=None,
+    monthly_chart = figure(height=350, title="Monthly", toolbar_location=None,
             tools="hover", tooltips="@mood: @value")
     monthly_chart.axis.visible = False
 
@@ -147,7 +147,7 @@ def moodpies(user):
     yearly_data['angle'] = yearly_data['value']/yearly_data['value'].sum() * 2*pi
     yearly_data['color'] = colors
 
-    yearly_chart = figure(plot_height=350, title="Yearly", toolbar_location=None,
+    yearly_chart = figure(height=350, title="Yearly", toolbar_location=None,
             tools="hover", tooltips="@mood: @value")
     yearly_chart.axis.visible = False
 
@@ -233,7 +233,7 @@ def activitypies(activity):
     weekly_data['angle'] = weekly_data['value']/weekly_data['value'].sum() * 2*pi
     weekly_data['color'] = colors
 
-    weekly_chart = figure(plot_height=350, title="Weekly", toolbar_location=None,
+    weekly_chart = figure(height=350, title="Weekly", toolbar_location=None,
             tools="hover", tooltips="@mood: @value")
     weekly_chart.axis.visible = False
 
@@ -245,7 +245,7 @@ def activitypies(activity):
     monthly_data['angle'] = monthly_data['value']/monthly_data['value'].sum() * 2*pi
     monthly_data['color'] = colors
 
-    monthly_chart = figure(plot_height=350, title="Monthly", toolbar_location=None,
+    monthly_chart = figure(height=350, title="Monthly", toolbar_location=None,
             tools="hover", tooltips="@mood: @value")
     monthly_chart.axis.visible = False
 
@@ -257,7 +257,7 @@ def activitypies(activity):
     yearly_data['angle'] = yearly_data['value']/yearly_data['value'].sum() * 2*pi
     yearly_data['color'] = colors
 
-    yearly_chart = figure(plot_height=350, title="Yearly", toolbar_location=None,
+    yearly_chart = figure(height=350, title="Yearly", toolbar_location=None,
             tools="hover", tooltips="@mood: @value")
     yearly_chart.axis.visible = False
 
