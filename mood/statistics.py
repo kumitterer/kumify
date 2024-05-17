@@ -6,10 +6,9 @@ from django.utils import timezone
 from math import pi
 
 from bokeh.models import HoverTool
-from bokeh.io import output_file, show
 from bokeh.plotting import figure
 from bokeh.transform import cumsum
-from bokeh.layouts import row, column
+from bokeh.layouts import column
 from holoviews.operation import timeseries
 from dateutil.relativedelta import relativedelta
 

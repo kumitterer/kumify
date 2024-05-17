@@ -2,10 +2,12 @@
 
 ## General
 
-- [_] Make sure users can't access other users' data
+- [_] Make extra sure users can't access other users' data
 - [_] User profiles / names / gateway config / time zone settings
 - [_] Implement a proper logging system
 - [_] Implement a proper API
+- [_] Move dist files to separate directories
+- [_] Turn this into issues
 
 ## cbt module
 

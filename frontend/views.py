@@ -11,7 +11,15 @@ class DashboardView(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["title"] = "Dashboard"
-        context["subtitle"] = "An overview of everything going on in your Kumify account."
+        context["subtitle"] = (
+            "An overview of everything going on in your Kumify account."
+        )
+        context["scripts"] = [
+            "frontend/dist/js/d3.v7.min.js",
+            "frontend/dist/js/cal-heatmap.min.js",
+            "frontend/js/dashboard.js",
+        ]
+        context["styles"] = ["frontend/dist/css/cal-heatmap.css"]
         return context
 
 

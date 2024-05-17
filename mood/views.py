@@ -1,4 +1,12 @@
-from django.views.generic import TemplateView, ListView, UpdateView, DetailView, CreateView, DeleteView, View
+from django.views.generic import (
+    TemplateView,
+    ListView,
+    UpdateView,
+    DetailView,
+    CreateView,
+    DeleteView,
+    View,
+)
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
@@ -6,6 +14,7 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.utils import timezone
 from django.views.decorators.clickjacking import xframe_options_sameorigin
 from django.utils.decorators import method_decorator
+from django.db.models import Count
 
 from .models import Status, Activity, Mood, StatusMedia, StatusActivity
 from .forms import StatusForm
@@ -19,6 +28,9 @@ from dateutil import relativedelta
 
 from datetime import datetime
 
+import json
+
+
 class StatusListView(LoginRequiredMixin, ListView):
     template_name = "mood/status_list.html"
     model = Status
@@ -27,11 +39,13 @@ class StatusListView(LoginRequiredMixin, ListView):
         context = super().get_context_data(**kwargs)
         context["title"] = "Status List"
         context["subtitle"] = "Just a list of your mood entries."
-        context["buttons"] = [(reverse_lazy("mood:status_create"), "New Status", "plus")]
+        context["buttons"] = [
+            (reverse_lazy("mood:status_create"), "New Status", "plus")
+        ]
         return context
 
     def get_queryset(self):
-        return Status.objects.filter(user=self.request.user).order_by('timestamp')
+        return Status.objects.filter(user=self.request.user).order_by("timestamp")
 
 
 class StatusViewView(LoginRequiredMixin, DetailView):
@@ -42,7 +56,13 @@ class StatusViewView(LoginRequiredMixin, DetailView):
         context = super().get_context_data(**kwargs)
         context["title"] = "View Status"
         context["subtitle"] = "View the details of your mood entry."
-        context["buttons"] = [(reverse_lazy("mood:status_edit", kwargs={"id": self.kwargs["id"]}), "Edit Status", "pen")]
+        context["buttons"] = [
+            (
+                reverse_lazy("mood:status_edit", kwargs={"id": self.kwargs["id"]}),
+                "Edit Status",
+                "pen",
+            )
+        ]
         return context
 
     def get_object(self):
@@ -91,7 +111,13 @@ class StatusEditView(LoginRequiredMixin, UpdateView):
         context["title"] = "Update Status"
         context["subtitle"] = "Change a status you created before."
         context["scripts"] = ["frontend/js/dropdown-to-buttons.js"]
-        context["buttons"] = [(reverse_lazy("mood:status_delete", kwargs={"id": self.kwargs["id"]}), "Delete Status", "trash-alt")]
+        context["buttons"] = [
+            (
+                reverse_lazy("mood:status_delete", kwargs={"id": self.kwargs["id"]}),
+                "Delete Status",
+                "trash-alt",
+            )
+        ]
         return context
 
     def get_object(self):
@@ -102,11 +128,13 @@ class StatusEditView(LoginRequiredMixin, UpdateView):
             dba = StatusMedia(status=form.instance)
             dba.file.save(get_upload_path(form.instance, attachment.name), attachment)
             dba.save()
-        
+
         for activity in form.cleaned_data["activities"]:
             if activity.user == self.request.user:
                 if not activity in form.instance.activity_set:
-                    StatusActivity.objects.create(activity=activity, status=form.instance)
+                    StatusActivity.objects.create(
+                        activity=activity, status=form.instance
+                    )
 
         for statusactivity in form.instance.statusactivity_set.all():
             if not statusactivity.activity in form.cleaned_data["activities"]:
@@ -137,7 +165,9 @@ class ActivityListView(LoginRequiredMixin, ListView):
         context = super().get_context_data(**kwargs)
         context["title"] = "Activities"
         context["subtitle"] = "The activities you have defined."
-        context["buttons"] = [(reverse_lazy("mood:activity_create"), "Create Activity", "pen")]
+        context["buttons"] = [
+            (reverse_lazy("mood:activity_create"), "Create Activity", "pen")
+        ]
         return context
 
     def get_queryset(self):
@@ -153,9 +183,20 @@ class ActivityEditView(LoginRequiredMixin, UpdateView):
         context = super().get_context_data(**kwargs)
         context["title"] = "Edit Activity"
         context["subtitle"] = "Make changes to the activity."
-        context["scripts"] = ["colorfield/jscolor/jscolor.js", "colorfield/colorfield.js", "frontend/js/fontawesome-iconpicker.min.js", "frontend/js/iconpicker-loader.js"]
+        context["scripts"] = [
+            "colorfield/jscolor/jscolor.js",
+            "colorfield/colorfield.js",
+            "frontend/js/fontawesome-iconpicker.min.js",
+            "frontend/js/iconpicker-loader.js",
+        ]
         context["styles"] = ["frontend/css/fontawesome-iconpicker.min.css"]
-        context["buttons"] = [(reverse_lazy("mood:activity_delete", kwargs={"id": self.kwargs["id"]}), "Delete Activity", "trash-alt")]
+        context["buttons"] = [
+            (
+                reverse_lazy("mood:activity_delete", kwargs={"id": self.kwargs["id"]}),
+                "Delete Activity",
+                "trash-alt",
+            )
+        ]
         return context
 
     def get_object(self):
@@ -174,7 +215,12 @@ class ActivityCreateView(LoginRequiredMixin, CreateView):
         context = super().get_context_data(**kwargs)
         context["title"] = "Create Activity"
         context["subtitle"] = "Add a new activity."
-        context["scripts"] = ["colorfield/jscolor/jscolor.js", "colorfield/colorfield.js", "frontend/js/fontawesome-iconpicker.min.js", "frontend/js/iconpicker-loader.js"]
+        context["scripts"] = [
+            "colorfield/jscolor/jscolor.js",
+            "colorfield/colorfield.js",
+            "frontend/js/fontawesome-iconpicker.min.js",
+            "frontend/js/iconpicker-loader.js",
+        ]
         context["styles"] = ["frontend/css/fontawesome-iconpicker.min.css"]
         return context
 
@@ -221,7 +267,12 @@ class MoodEditView(LoginRequiredMixin, UpdateView):
         context = super().get_context_data(**kwargs)
         context["title"] = "Edit Mood"
         context["subtitle"] = "Make changes to the mood."
-        context["scripts"] = ["colorfield/jscolor/jscolor.js", "colorfield/colorfield.js", "frontend/js/fontawesome-iconpicker.min.js", "frontend/js/iconpicker-loader.js"]
+        context["scripts"] = [
+            "colorfield/jscolor/jscolor.js",
+            "colorfield/colorfield.js",
+            "frontend/js/fontawesome-iconpicker.min.js",
+            "frontend/js/iconpicker-loader.js",
+        ]
         context["styles"] = ["frontend/css/fontawesome-iconpicker.min.css"]
         return context
 
@@ -241,7 +292,12 @@ class MoodCreateView(LoginRequiredMixin, CreateView):
         context = super().get_context_data(**kwargs)
         context["title"] = "Create Activity"
         context["subtitle"] = "Add a new activity."
-        context["scripts"] = ["colorfield/jscolor/jscolor.js", "colorfield/colorfield.js", "frontend/js/fontawesome-iconpicker.min.js", "frontend/js/iconpicker-loader.js"]
+        context["scripts"] = [
+            "colorfield/jscolor/jscolor.js",
+            "colorfield/colorfield.js",
+            "frontend/js/fontawesome-iconpicker.min.js",
+            "frontend/js/iconpicker-loader.js",
+        ]
         context["styles"] = ["frontend/css/fontawesome-iconpicker.min.css"]
         return context
 
@@ -263,11 +319,15 @@ class NotificationListView(LoginRequiredMixin, ListView):
         context = super().get_context_data(**kwargs)
         context["title"] = "Notifications"
         context["subtitle"] = "The daily reminders you have set up."
-        context["buttons"] = [(reverse_lazy("mood:notification_create"), "New Notification", "plus")]
+        context["buttons"] = [
+            (reverse_lazy("mood:notification_create"), "New Notification", "plus")
+        ]
         return context
 
     def get_queryset(self):
-        return NotificationDailySchedule.objects.filter(notification__recipient=self.request.user, notification__app="mood")
+        return NotificationDailySchedule.objects.filter(
+            notification__recipient=self.request.user, notification__app="mood"
+        )
 
 
 class NotificationCreateView(LoginRequiredMixin, CreateView):
@@ -282,7 +342,11 @@ class NotificationCreateView(LoginRequiredMixin, CreateView):
         return context
 
     def form_valid(self, form):
-        notification = Notification.objects.create(content="Hi, it's time for a new Kumify entry! Go to %KUMIFYURL% to document your mood!", recipient=self.request.user, app="mood")
+        notification = Notification.objects.create(
+            content="Hi, it's time for a new Kumify entry! Go to %KUMIFYURL% to document your mood!",
+            recipient=self.request.user,
+            app="mood",
+        )
         obj = form.save(commit=False)
         obj.notification = notification
         return super().form_valid(form)
@@ -300,14 +364,23 @@ class NotificationEditView(LoginRequiredMixin, UpdateView):
         context = super().get_context_data(**kwargs)
         context["title"] = "Edit Notification"
         context["subtitle"] = "Change the time of a daily notification."
-        context["buttons"] = [(reverse_lazy("mood:notification_delete", args=[self.kwargs["id"]]), "Delete Notification")]
+        context["buttons"] = [
+            (
+                reverse_lazy("mood:notification_delete", args=[self.kwargs["id"]]),
+                "Delete Notification",
+            )
+        ]
         return context
 
     def get_success_url(self):
         return reverse_lazy("mood:notification_list")
 
     def get_object(self):
-        return get_object_or_404(NotificationDailySchedule, notification__recipient=self.request.user, id=self.kwargs["id"])
+        return get_object_or_404(
+            NotificationDailySchedule,
+            notification__recipient=self.request.user,
+            id=self.kwargs["id"],
+        )
 
 
 class NotificationDeleteView(LoginRequiredMixin, DeleteView):
@@ -315,7 +388,11 @@ class NotificationDeleteView(LoginRequiredMixin, DeleteView):
     model = NotificationDailySchedule
 
     def get_object(self):
-        return get_object_or_404(NotificationDailySchedule, notification__recipient=self.request.user, id=self.kwargs["id"])
+        return get_object_or_404(
+            NotificationDailySchedule,
+            notification__recipient=self.request.user,
+            id=self.kwargs["id"],
+        )
 
     def delete(self, request, *args, **kwargs):
         self.object = self.get_object()
@@ -325,6 +402,7 @@ class NotificationDeleteView(LoginRequiredMixin, DeleteView):
 
     def get_success_url(self):
         return reverse_lazy("mood:notification_list")
+
 
 class MoodStatisticsView(LoginRequiredMixin, TemplateView):
     template_name = "mood/statistics.html"
@@ -347,6 +425,7 @@ class MoodStatisticsView(LoginRequiredMixin, TemplateView):
         context["title"] = "Statistics"
         context["activities"] = activitystats(self.request.user)
         return context
+
 
 class MoodCSVView(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
@@ -377,13 +456,16 @@ class MoodCSVView(LoginRequiredMixin, View):
 
         output = "date,value"
 
-        for status in Status.objects.filter(user=request.user, timestamp__gte=mindate, timestamp__lte=maxdate):
+        for status in Status.objects.filter(
+            user=request.user, timestamp__gte=mindate, timestamp__lte=maxdate
+        ):
             if status.mood:
                 date = status.timestamp.strftime("%Y-%m-%d %H:%M")
                 output += f"\n{date},{status.mood.value}"
 
         res.write(output)
         return res
+
 
 class MoodPlotView(LoginRequiredMixin, View):
     @method_decorator(xframe_options_sameorigin)
@@ -396,6 +478,7 @@ class MoodPlotView(LoginRequiredMixin, View):
         res.write(hvhtml(moodstats(request.user)))
         return res
 
+
 class MoodPiesView(LoginRequiredMixin, View):
     @method_decorator(xframe_options_sameorigin)
     def dispatch(self, *args, **kwargs):
@@ -407,6 +490,7 @@ class MoodPiesView(LoginRequiredMixin, View):
         res.write(bkhtml(moodpies(request.user)))
         return res
 
+
 class ActivityStatisticsView(LoginRequiredMixin, TemplateView):
     template_name = "mood/statistics_activity.html"
 
@@ -416,6 +500,7 @@ class ActivityStatisticsView(LoginRequiredMixin, TemplateView):
         context["title"] = "Activity Statistics for %s" % activity.name
         return context
 
+
 class ActivityPlotView(LoginRequiredMixin, View):
     @method_decorator(xframe_options_sameorigin)
     def dispatch(self, *args, **kwargs):
@@ -424,8 +509,15 @@ class ActivityPlotView(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
         res = HttpResponse(content_type="text/html")
 
-        res.write(hvhtml(activitymood(get_object_or_404(Activity, user=request.user, id=kwargs["id"]))))
+        res.write(
+            hvhtml(
+                activitymood(
+                    get_object_or_404(Activity, user=request.user, id=kwargs["id"])
+                )
+            )
+        )
         return res
+
 
 class ActivityPiesView(LoginRequiredMixin, View):
     @method_decorator(xframe_options_sameorigin)
@@ -435,5 +527,50 @@ class ActivityPiesView(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
         res = HttpResponse(content_type="text/html")
 
-        res.write(bkhtml(activitypies(get_object_or_404(Activity, user=request.user, id=kwargs["id"]))))
+        res.write(
+            bkhtml(
+                activitypies(
+                    get_object_or_404(Activity, user=request.user, id=kwargs["id"])
+                )
+            )
+        )
+        return res
+
+
+class MoodCountHeatmapJSONView(LoginRequiredMixin, View):
+    """Returns a JSON object with the mood entries for a given time period.
+
+    This is used in conjunction with the Cal-Heatmap library to display a
+    heatmap of mood entries.
+    """
+
+    def get(self, request, *args, **kwargs):
+        res = HttpResponse(content_type="application/json")
+
+        start = request.GET.get("start")
+        end = request.GET.get("end")
+
+        if end:
+            maxdate = datetime.strptime(end, "%Y-%m-%d")
+        else:
+            maxdate = timezone.now()
+
+        if start:
+            mindate = datetime.strptime(start, "%Y-%m-%d")
+        else:
+            mindate = maxdate - relativedelta.relativedelta(years=1)
+
+        data = (
+            Status.objects.filter(
+                user=request.user, timestamp__gte=mindate, timestamp__lte=maxdate
+        
+            )
+            .values("timestamp__date")
+            .annotate(value=Count("id"))
+        )
+
+        data = [{"date": d["timestamp__date"].strftime("%Y-%m-%d"), "value": d["value"]} for d in data]
+
+        res.write(json.dumps(data))
+
         return res
