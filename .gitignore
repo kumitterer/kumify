@@ -1,7 +1,6 @@
 __pycache__/
 *.pyc
 db.sqlite3
-migrations/
 venv/
 localsettings.py
 settings.ini
