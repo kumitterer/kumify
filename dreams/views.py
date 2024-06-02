@@ -1,6 +1,5 @@
-from django.shortcuts import render
 
-from django.views.generic import TemplateView, ListView, UpdateView, DetailView, CreateView, DeleteView
+from django.views.generic import ListView, UpdateView, DetailView, CreateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
@@ -93,11 +92,11 @@ class DreamEditView(LoginRequiredMixin, UpdateView):
     def form_valid(self, form):
         for theme in form.cleaned_data["themes"]:
             if theme.user == self.request.user:
-                if not theme in form.instance.theme_set:
+                if theme not in form.instance.theme_set:
                     DreamTheme.objects.create(theme=theme, dream=form.instance)
 
         for dreamtheme in form.instance.dreamtheme_set.all():
-            if not dreamtheme.theme in form.cleaned_data["themes"]:
+            if dreamtheme.theme not in form.cleaned_data["themes"]:
                 dreamtheme.delete()
 
         for attachment in form.cleaned_data["uploads"]:

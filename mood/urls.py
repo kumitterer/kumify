@@ -24,7 +24,7 @@ from .views import (
     MoodCountHeatmapJSONView,
 )
 
-from django.urls import path, include
+from django.urls import path
 
 app_name = "mood"
 

@@ -15,9 +15,9 @@ def sidebar_nav():
             features = import_module(f"{module}.features")
             try:
                 sections += features.NAV_SECTIONS
-            except:
+            except Exception:
                 pass
-        except:
+        except Exception:
             pass
 
     return """

@@ -56,7 +56,7 @@ def average_mood(context, start, end=None, daily_averages=True):
     for status in status_list:
         if status.mood:
             if daily_averages:
-                if not status.timestamp.date() in moods.keys():
+                if status.timestamp.date() not in moods.keys():
                     moods[status.timestamp.date()] = [status.mood.value]
                 else:
                     moods[status.timestamp.date()].append(status.mood.value)

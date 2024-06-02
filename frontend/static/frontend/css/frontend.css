@@ -1,0 +1,32 @@
+.heatmap-container {
+    height: 150px;
+  }
+  
+  .card {
+    border-radius: 10px; /* Rounded corners */
+  }
+  
+  .card-header {
+    background-color: #f8f9fc; /* Light background for headers */
+    border-bottom: none; /* Remove border */
+  }
+  
+  .card-body {
+    padding: 1.5rem; /* Increase padding */
+  }
+  
+  .text-uppercase {
+    letter-spacing: 0.05em; /* Slightly increased letter spacing */
+  }
+  
+  .h5 {
+    font-size: 1.25rem; /* Slightly larger font size */
+  }
+  
+  .mb-4 {
+    margin-bottom: 1.5rem !important; /* Consistent spacing */
+  }
+  
+  .shadow-sm {
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075) !important; /* Subtle shadow */
+  }

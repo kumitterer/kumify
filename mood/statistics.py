@@ -72,7 +72,7 @@ def activitystats(user):
 
     for status in Status.objects.filter(user=user):
         for activity in status.activity_set:
-            if not activity in output.keys():
+            if activity not in output.keys():
                 output[activity] = {
                     "alltime": 0,
                     "yearly": 0,
@@ -274,8 +274,6 @@ def activitymood(activity):
 
 def activitypies(activity):
     hv.extension("bokeh")
-
-    maxdate = timezone.now()
 
     sa = StatusActivity.objects.filter(activity=activity)
 

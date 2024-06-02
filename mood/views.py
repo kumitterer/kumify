@@ -131,13 +131,13 @@ class StatusEditView(LoginRequiredMixin, UpdateView):
 
         for activity in form.cleaned_data["activities"]:
             if activity.user == self.request.user:
-                if not activity in form.instance.activity_set:
+                if activity not in form.instance.activity_set:
                     StatusActivity.objects.create(
                         activity=activity, status=form.instance
                     )
 
         for statusactivity in form.instance.statusactivity_set.all():
-            if not statusactivity.activity in form.cleaned_data["activities"]:
+            if statusactivity.activity not in form.cleaned_data["activities"]:
                 statusactivity.delete()
 
         return super().form_valid(form)
@@ -419,7 +419,8 @@ class MoodStatisticsView(LoginRequiredMixin, TemplateView):
         if startdate:
             mindate = datetime.strptime(startdate, "%Y-%m-%d")
         else:
-            mindate = maxdate - relativedelta.relativedelta(weeks=1)
+            mindate = maxdate - relativedelta.relativedelta(weeks=1) # noqa: F841
+            # TODO: Do something with this...?
 
         context = super().get_context_data(**kwargs)
         context["title"] = "Statistics"

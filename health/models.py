@@ -35,12 +35,12 @@ class Medication(models.Model):
     prn = models.BooleanField(default=False)
     remarks = models.TextField(null=True, blank=True)
 
-class MedicationSchedule(models.Model):
-    class ScheduleChoices(models.IntegerChoices):
-        DAYS = 0
-        WEEKS = 1
-        MONTHS = 2
+class ScheduleChoices(models.IntegerChoices):
+    DAYS = 0
+    WEEKS = 1
+    MONTHS = 2
 
+class MedicationSchedule(models.Model):
     medication = models.ForeignKey(Medication, models.CASCADE)
 
     cycle_type = models.IntegerField(choices=ScheduleChoices.choices)

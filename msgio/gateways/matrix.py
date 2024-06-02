@@ -1,7 +1,5 @@
-from django.views.generic import View
 from django.dispatch import receiver
 
-import json
 import asyncio
 
 from nio import AsyncClient

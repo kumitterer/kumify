@@ -16,7 +16,7 @@ class NavSection:
         self.items.sort(key=lambda x: x.order)
 
         for item in self.items:
-            html += f"""
+            html += """
             <!-- Nav Item -->
             <li class="nav-item""" + (" active" if item.name == active else "") + f"""">
                 <a class="nav-link" href="{item.url}">

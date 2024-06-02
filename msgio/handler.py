@@ -15,7 +15,7 @@ def send_notifications(sender, **kwargs):
                     returns.append(notification.send())
                     datetime.sent = True
                     datetime.save()
-                except:
+                except Exception:
                     pass # TODO: Implement some sort of error logging / admin notification
         for daily in notification.notificationdailyschedule_set.all():
             if ((not daily.last_sent) or daily.last_sent < localtime(now()).date()) and daily.time <= localtime(now()).time():
@@ -23,7 +23,7 @@ def send_notifications(sender, **kwargs):
                     returns.append(notification.send())
                     daily.last_sent = localtime(now()).date()
                     daily.save()
-                except:
+                except Exception:
                     pass # TODO: See above
 
     return returns

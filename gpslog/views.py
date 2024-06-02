@@ -4,10 +4,11 @@ from django.shortcuts import get_object_or_404
 from django.utils import timezone
 from django.contrib.gis.geos import Point
 
-from .models import GPSTrack, GPSToken, GPSPoint
+from .models import GPSTrack, GPSToken
 
 
 class GPSLogView(LoginRequiredMixin, View):
+    # TODO: Finish this view
     def dispatch(self, request, *args, **kwargs):
         self.gps_track = get_object_or_404(GPSTrack, id=self.kwargs["track"])
         self.gps_token = get_object_or_404(
@@ -27,11 +28,9 @@ class GPSLogView(LoginRequiredMixin, View):
 
             alt = request.GET.get("alt", None)
 
-            point = Point(lat, lon, alt)
+            point = Point(lat, lon, alt)  # noqa: F841
 
-            tst = request.GET.get("tst", timezone.now().timestamp())
-
-
+            tst = request.GET.get("tst", timezone.now().timestamp())  # noqa: F841
 
     def post(self, request, *args, **kwargs):
         pass
