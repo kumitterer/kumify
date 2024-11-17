@@ -26,11 +26,11 @@ try:
 except NameError:
     ENABLED_MODULES = [
         'cbt',
+        'mood',
         'dreams',
         'health',
         'friends',
         'habits',
-        'mood',
         'gpslog',
     ]
 
