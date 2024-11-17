@@ -566,11 +566,11 @@ class MoodCountHeatmapJSONView(LoginRequiredMixin, View):
                 user=request.user, timestamp__gte=mindate, timestamp__lte=maxdate
         
             )
-            .values("timestamp__date")
             .annotate(value=Count("id"))
         )
 
-        data = [{"date": d["timestamp__date"].strftime("%Y-%m-%d"), "value": d["value"]} for d in data]
+        # TODO: Should eventually change this so that it returns a *color* as a value and the count as a tooltip
+        data = [{"date": d.timestamp.strftime("%Y-%m-%d"), "value": d.value} for d in data]
 
         res.write(json.dumps(data))
 
