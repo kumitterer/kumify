@@ -1,62 +1,126 @@
 {% extends "frontend/base.html" %}
 {% load mood_categories %}
 {% block "content" %}
-
-{% if form.errors %}
-{% for field in form %}
-{% for error in field.errors %}
-<div class="alert alert-danger" role="alert">
-    {{ field.name }}: {{ error }}
-  </div>
-{% endfor %}
-{% endfor %}
-{% endif %}
-                    <div class="card shadow mb-4">
-                        <div class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold text-primary">Edit {{ object.name }}</h6>
-                        </div>
-                        <div class="card-body">
-                            <form action="" method="POST" enctype="multipart/form-data">
-                            {% csrf_token %}
-                            <div class="table-responsive">
-                                <table>
-                                    <tr><th><label for="id_timestamp">Timestamp:</label></th><td><input type="text" name="timestamp" value="{% if object.timestamp %}{{ object.timestamp | date:"Y-m-d H:i" }}{% else %}{% now "Y-m-d H:i" %}{% endif %}" required id="id_timestamp"><input type="hidden" name="initial-timestamp" value="2020-12-26 19:24:14" id="initial-id_timestamp"></td></tr>
-                                    <tr><th><label for="id_title">Title:</label></th><td><input value="{{ object.title }}" type="text" name="title" maxlength="64" id="id_title"></td></tr>
-                                    <tr><th><label for="id_text">Text:</label></th><td><textarea name="text" cols="40" rows="10" id="id_text">{{ object.text }}</textarea></td></tr>
-
-                                    <tr><th><label for="id_mood">Mood:</label></th><td><select name="mood" class="dtb" required id="id_mood">
-                                        <option value="" {% if not object.mood %}selected{% endif %}>---------</option>
-    
-                                        {% for mood in request.user.mood_set.all|dictsort:"value" %}
-                                        <option data-color="{{ mood.color }}" data-icon="{{ mood.icon }}" value="{{ mood.id }}" {% if object.mood == mood %}selected{% endif %}>{{ mood }}</option>
-                                        {% endfor %}
-    
-                                        </select></td></tr>
-
-                                    <tr><th><label for="activities">Activities:</label></th><td>
-                                        {% for activitycategory in request.user.activitycategory_set.all %}
-
-                                        <p><b>{{ activitycategory.name }}</b></p>
-
-                                        {% for activity in activitycategory.activity_set.all|dictsort:"name" %}
-                                            <input type="checkbox" {% if activity in object.activity_set %}checked{% endif %} value="{{ activity.id }}" name="activities"> <i class="{{ activity.icon }}" style="color:{{ activity.color }};"></i> {{ activity }}<br>
-                                        {% endfor %}
-                                        {% endfor %}
-
-                                        {% other_activities as activities %}
-                                        {% if activities %}<p><b>Uncategorized activities</b></p>{% endif%}
-
-                                        {% for activity in activities|dictsort:"name" %}
-                                            <input type="checkbox" {% if activity in object.activity_set %}checked{% endif %} value="{{ activity.id }}" name="activities"> <i class="{{ activity.icon }}" style="color:{{ activity.color }};"></i> {{ activity }}<br>
-                                        {% endfor %}
-                                    </td></tr>
-
-                                    <tr><th><label for="id_uploads">Uploads:</label></th><td><input type="file" name="uploads" id="id_uploads" multiple="multiple"></td></tr>
-                                </table>
-                            </div>
-                            <button style="margin-top: 20px;" class="form-control btn-primary" type="submit">Save</button>
-                            </form>
-                        </div>
-                    </div>
-
+    {% if form.errors %}
+        {% for field in form %}
+            {% for error in field.errors %}
+                <div class="alert alert-danger" role="alert">{{ field.name }}: {{ error }}</div>
+            {% endfor %}
+        {% endfor %}
+    {% endif %}
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Edit {{ object.name }}</h6>
+        </div>
+        <div class="card-body">
+            <form action="" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="table-responsive">
+                    <table>
+                        <tr>
+                            <th>
+                                <label for="id_timestamp">Timestamp:</label>
+                            </th>
+                            <td>
+                                <input type="text"
+                                       name="timestamp"
+                                       value="{% if object.timestamp %}{{ object.timestamp | date:"Y-m-d H:i" }}{% else %}{% now "Y-m-d H:i" %}{% endif %}"
+                                       required
+                                       id="id_timestamp">
+                                <input type="hidden"
+                                       name="initial-timestamp"
+                                       value="2020-12-26 19:24:14"
+                                       id="initial-id_timestamp">
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                <label for="id_title">Title:</label>
+                            </th>
+                            <td>
+                                <input value="{{ object.title }}"
+                                       type="text"
+                                       name="title"
+                                       maxlength="64"
+                                       id="id_title">
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                <label for="id_text">Text:</label>
+                            </th>
+                            <td>
+                                <textarea name="text" cols="40" rows="10" id="id_text">{{ object.text }}</textarea>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                <label for="id_mood">Mood:</label>
+                            </th>
+                            <td>
+                                <select name="mood" class="dtb" required id="id_mood">
+                                    <option value="" {% if not object.mood %}selected{% endif %}>---------</option>
+                                    {% for mood in request.user.mood_set.all|dictsort:"value" %}
+                                        <option data-color="{{ mood.color }}"
+                                                data-icon="{{ mood.icon }}"
+                                                value="{{ mood.id }}"
+                                                {% if object.mood == mood %}selected{% endif %}>{{ mood }}</option>
+                                    {% endfor %}
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                <label for="activities">Activities:</label>
+                            </th>
+                            <td>
+                                {% for activitycategory in request.user.activitycategory_set.all %}
+                                    <p>
+                                        <b>{{ activitycategory.name }}</b>
+                                    </p>
+                                    {% for activity in activitycategory.activity_set.all|dictsort:"name" %}
+                                        {% if not activity.hidden %}
+                                            <input type="checkbox"
+                                                   {% if activity in object.activity_set %}checked{% endif %}
+                                                   value="{{ activity.id }}"
+                                                   name="activities">
+                                            <i class="{{ activity.icon }}" style="color:{{ activity.color }};"></i> {{ activity }}
+                                            <br>
+                                        {% endif %}
+                                    {% endfor %}
+                                {% endfor %}
+                                {% other_activities as activities %}
+                                {% if activities %}
+                                    <p>
+                                        <b>Uncategorized activities</b>
+                                    </p>
+                                {% endif %}
+                                {% for activity in activities|dictsort:"name" %}
+                                    {% if not activity.hidden %}
+                                        <input type="checkbox"
+                                               {% if activity in object.activity_set %}checked{% endif %}
+                                               value="{{ activity.id }}"
+                                               name="activities">
+                                        <i class="{{ activity.icon }}" style="color:{{ activity.color }};"></i> {{ activity }}
+                                        <br>
+                                    {% endif %}
+                                {% endfor %}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                <label for="id_uploads">Uploads:</label>
+                            </th>
+                            <td>
+                                <input type="file" name="uploads" id="id_uploads" multiple="multiple">
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <button style="margin-top: 20px"
+                        class="form-control btn-primary"
+                        type="submit">Save</button>
+            </form>
+        </div>
+    </div>
 {% endblock %}

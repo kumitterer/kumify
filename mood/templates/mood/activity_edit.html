@@ -1,30 +1,74 @@
 {% extends "frontend/base.html" %}
 {% block "content" %}
-
-                    <div class="card shadow mb-4">
-                        <div class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold text-primary">Edit {{ object.name }}</h6>
-                        </div>
-                        <div class="card-body">
-                            <form action="" method="POST">
-                            {% csrf_token %}
-                            <div class="table-responsive">
-                                <table>
-                                    <tr><th><label for="id_name">Name:</label></th><td><input type="text" name="name" value="{{ object.name }}" maxlength="64" required id="id_name"></td></tr>
-                                    <tr><th><label for="id_icon">Icon:</label></th><td><input style="visibility: hidden;" class="icp icp-auto" type="text" name="icon" value="{{ object.icon }}" maxlength="64" required id="id_icon"></td></tr>
-                                    <tr><th><label for="id_color">Color:</label></th><td><input type="text"
-                                     id="id_color"
-                                     class="form-control colorfield_field jscolor"
-                                     name="color"
-                                     value="{{ object.color }}"
-                                     placeholder="{{ object.color }}"
-                                     data-jscolor="{hash:true,width:225,height:150,required:true}"
-                                     required /></td></tr>
-                                </table>
-                            </div>
-                            <button style="margin-top: 20px;" class="form-control btn-primary" type="submit">Save</button>
-                            </form>
-                        </div>
-                    </div>
-
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Edit {{ object.name }}</h6>
+        </div>
+        <div class="card-body">
+            <form action="" method="POST">
+                {% csrf_token %}
+                <div class="table-responsive">
+                    <table>
+                        <tr>
+                            <th>
+                                <label for="id_name">Name:</label>
+                            </th>
+                            <td>
+                                <input type="text"
+                                       name="name"
+                                       value="{{ object.name }}"
+                                       maxlength="64"
+                                       required
+                                       id="id_name">
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                <label for="id_icon">Icon:</label>
+                            </th>
+                            <td>
+                                <input style="visibility: hidden"
+                                       class="icp icp-auto"
+                                       type="text"
+                                       name="icon"
+                                       value="{{ object.icon }}"
+                                       maxlength="64"
+                                       required
+                                       id="id_icon">
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                <label for="id_color">Color:</label>
+                            </th>
+                            <td>
+                                <input type="text"
+                                       id="id_color"
+                                       class="form-control colorfield_field jscolor"
+                                       name="color"
+                                       value="{{ object.color }}"
+                                       placeholder="{{ object.color }}"
+                                       data-jscolor="{hash:true,width:225,height:150,required:true}"
+                                       required />
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                <label for="id_hidden">Hidden:</label>
+                            </th>
+                            <td>
+                                <input type="checkbox"
+                                       name="hidden"
+                                       id="id_hidden"
+                                       {% if object.hidden %}checked{% endif %}>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <button style="margin-top: 20px"
+                        class="form-control btn-primary"
+                        type="submit">Save</button>
+            </form>
+        </div>
+    </div>
 {% endblock %}

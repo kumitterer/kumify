@@ -61,6 +61,7 @@ class Activity(models.Model):
     icon = models.CharField(default="fas fa-check", max_length=64)
     color = ColorField(default="#000000")
     category = models.ForeignKey(ActivityCategory, models.SET_NULL, null=True)
+    hidden = models.BooleanField(default=False)
 
     def __str__(self):
         return self.name
