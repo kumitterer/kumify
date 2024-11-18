@@ -27,13 +27,9 @@ class GPSPoint(models.Model):
     token = models.ForeignKey(GPSToken, models.SET_NULL, null=True)
 
     # Optional additional information
-    battery = models.DecimalField(
-        max_digits=5, decimal_places=2, null=True, blank=True)
-    accuracy = models.DecimalField(
-        max_digits=64, decimal_places=32, null=True, blank=True)
-    speed = models.DecimalField(
-        max_digits=64, decimal_places=32, null=True, blank=True)
-    bearing = models.DecimalField(
-        max_digits=64, decimal_places=61, null=True, blank=True)
+    battery = models.FloatField(null=True, blank=True)
+    accuracy = models.FloatField(null=True, blank=True)
+    speed = models.FloatField(null=True, blank=True)
+    bearing = models.FloatField(null=True, blank=True)
     satellites = models.IntegerField(null=True, blank=True)
     user_agent = models.TextField(null=True, blank=True)
