@@ -1,6 +1,8 @@
-from frontend.classes import NavSection, NavItem
+from frontend.classes import NavSection, NavItem, DashboardSection
 
 from django.urls import reverse_lazy
+
+# Sidebar navigation items
 
 dreams_section = NavSection("Dreams")
 
@@ -14,3 +16,9 @@ for _, item in dreams_items.items():
     dreams_section.add_item(item)
 
 NAV_SECTIONS = [dreams_section]
+
+# Dashboard sections
+
+dreams_section = DashboardSection("Dreams", "dreams/dashboard_section.html")
+
+DASHBOARD_SECTIONS = [dreams_section]

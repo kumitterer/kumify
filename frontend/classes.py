@@ -1,3 +1,6 @@
+from django.template.loader import render_to_string
+
+
 class NavSection:
     def __init__(self, name, order=100):
         self.name = name
@@ -16,17 +19,22 @@ class NavSection:
         self.items.sort(key=lambda x: x.order)
 
         for item in self.items:
-            html += """
+            html += (
+                """
             <!-- Nav Item -->
-            <li class="nav-item""" + (" active" if item.name == active else "") + f"""">
+            <li class="nav-item"""
+                + (" active" if item.name == active else "")
+                + f"""">
                 <a class="nav-link" href="{item.url}">
                     <i class="{item.icon}"></i>
                     <span>{item.name}</span>
                 </a>
             </li>
             """
+            )
 
         return html
+
 
 class NavItem:
     def __init__(self, name, url, icon="fas fa-fw fa-smile", title=None, order=100):
@@ -35,3 +43,13 @@ class NavItem:
         self.icon = icon
         self.title = title or name
         self.order = order
+
+
+class DashboardSection:
+    def __init__(self, name, template, context=None):
+        self.name = name
+        self.template = template
+        self.context = context or {}
+
+    def get_html(self, request):
+        return render_to_string(self.template, self.context, request)

@@ -1,0 +1,78 @@
+{% load dream_stats %}
+<!-- Dream Stats -->
+<div class="row">
+    <!-- Total Dreams -->
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card border-left-primary shadow h-100 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Dream count (total)</div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">{% total_dreams %}</div>
+                    </div>
+                    <div class="col-auto">
+                        <i class="fas fa-book fa-2x text-gray-300"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Weekly Dreams -->
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card border-left-success shadow h-100 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Dreams (weekly)</div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">{% weekly_dreams %}</div>
+                    </div>
+                    <div class="col-auto">
+                        <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Special Dreams -->
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card border-left-info shadow h-100 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Special Dreams (lucid / wet)</div>
+                        <div class="row no-gutters align-items-center">
+                            <div class="col-auto">
+                                {% special_dreams_weekly as weekly %}
+                                <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">
+                                    {{ weekly.0 }} / {{ weekly.1 }} <sub><i>(weekly)</i></sub>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-auto">
+                        <i class="{{ moodobj.icon }} fa-2x text-gray-300"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Most common theme -->
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card border-left-warning shadow h-100 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Most Common Theme (weekly)</div>
+                        {% most_common_theme_weekly as theme %}
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">
+                            {{ theme.0 }} <sub><i>({{ theme.1 }})</i></sub>
+                        </div>
+                    </div>
+                    <div class="col-auto">
+                        <i class="fas fa-bed fa-2x text-gray-300"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
