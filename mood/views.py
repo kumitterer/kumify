@@ -177,7 +177,7 @@ class ActivityListView(LoginRequiredMixin, ListView):
 class ActivityEditView(LoginRequiredMixin, UpdateView):
     template_name = "mood/activity_edit.html"
     model = Activity
-    fields = ["name", "icon", "color"]
+    fields = ["name", "icon", "color", "hidden"]
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
