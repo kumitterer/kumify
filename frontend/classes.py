@@ -1,16 +1,18 @@
 from django.template.loader import render_to_string
 
+import random
+
 
 class NavSection:
     def __init__(self, name, order=100):
         self.name = name
         self.order = order
-        self.items = []
+        self.items: list[NavItem | NavCollapse] = []
 
     def add_item(self, item):
         self.items.append(item)
 
-    def get_html(self, active=None):
+    def get_html(self, active=None) -> str:
         html = f"""
             <!-- Heading -->
             <div class="sidebar-heading">{self.name}</div>
@@ -19,19 +21,7 @@ class NavSection:
         self.items.sort(key=lambda x: x.order)
 
         for item in self.items:
-            html += (
-                """
-            <!-- Nav Item -->
-            <li class="nav-item"""
-                + (" active" if item.name == active else "")
-                + f"""">
-                <a class="nav-link" href="{item.url}">
-                    <i class="{item.icon}"></i>
-                    <span>{item.name}</span>
-                </a>
-            </li>
-            """
-            )
+            html += item.get_html()
 
         return html
 
@@ -43,6 +33,64 @@ class NavItem:
         self.icon = icon
         self.title = title or name
         self.order = order
+
+    def get_html(self, active=None) -> str:
+        return f"""
+            <!-- Nav Item -->
+            <li class="nav-item">
+                <a class="nav-link{" active" if self.name == active else ""}" href="{self.url}">
+                    <i class="{self.icon}"></i>
+                    <span>{self.name}</span>
+                </a>
+            </li>
+            """
+
+
+class NavCollapse:
+    def __init__(self, name, icon="fas fa-fw fa-smile", order=100):
+        self.name = name
+        self.icon = icon
+        self.order = order
+        self.items: list[NavItem] = []
+
+    def add_item(self, item):
+        self.items.append(item)
+
+    def get_html(self, active=None) -> str:
+        element_id = random.randint(1000, 9999)
+
+        html = f"""
+            <!-- Nav Item - {self.name} -->
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapse{element_id}" aria-expanded="true" aria-controls="collapse{element_id}">
+                    <i class="{self.icon}"></i>
+                    <span>{self.name}</span>
+                </a>
+                <div id="collapse{element_id}" class="collapse" aria-labelledby="heading{element_id}" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+            """
+
+        self.items.sort(key=lambda x: x.order)
+
+        for item in self.items:
+            html += (
+                """
+                <a class="collapse-item"""
+                + (" active" if item.name == active else "")
+                + f""""
+                href="{item.url}">
+                <i class="{item.icon}"></i>
+                {item.name}</a>
+                """
+            )
+
+        html += """
+                    </div>
+                </div>
+            </li>
+            """
+
+        return html
 
 
 class DashboardSection:

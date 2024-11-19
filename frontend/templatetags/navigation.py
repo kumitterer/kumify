@@ -2,13 +2,15 @@ from django import template
 from django.conf import settings
 from django.urls import reverse_lazy
 
+from ..classes import NavSection
+
 from importlib import import_module
 
 register = template.Library()
 
 @register.simple_tag
 def sidebar_nav():
-    sections = []
+    sections: list[NavSection] = []
 
     for module in settings.CORE_MODULES + settings.ENABLED_MODULES:
         try:

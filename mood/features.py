@@ -1,4 +1,4 @@
-from frontend.classes import NavSection, NavItem, DashboardSection
+from frontend.classes import NavSection, NavItem, NavCollapse, DashboardSection
 
 from django.urls import reverse_lazy
 
@@ -6,18 +6,24 @@ from django.urls import reverse_lazy
 
 mood_section = NavSection("Mood")
 
-mood_items = {
-    "mood_status_list": NavItem("Status List", reverse_lazy("mood:status_list")),
-    "mood_activity_list": NavItem("Activities", reverse_lazy("mood:activity_list")),
-    "mood_mood_list": NavItem("Moods", reverse_lazy("mood:mood_list")),
-    "mood_notification_list": NavItem(
+mood_settings_collapse = NavCollapse("Settings", icon="fas fa-fw fa-cog")
+
+mood_status_list = NavItem("Status List", reverse_lazy("mood:status_list"))
+
+mood_settings = [
+    NavItem("Activities", reverse_lazy("mood:activity_list")),
+    NavItem("Moods", reverse_lazy("mood:mood_list")),
+    NavItem(
         "Notifications", reverse_lazy("mood:notification_list")
     ),
-    "mood_statistics": NavItem("Statistics", reverse_lazy("mood:statistics")),
-}
+    NavItem("Statistics", reverse_lazy("mood:statistics")),
+]
 
-for _, item in mood_items.items():
-    mood_section.add_item(item)
+for setting in mood_settings:
+    mood_settings_collapse.add_item(setting)
+
+mood_section.add_item(mood_status_list)
+mood_section.add_item(mood_settings_collapse)
 
 NAV_SECTIONS = [mood_section]
 

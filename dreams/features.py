@@ -1,4 +1,4 @@
-from frontend.classes import NavSection, NavItem, DashboardSection
+from frontend.classes import NavSection, NavItem, NavCollapse, DashboardSection
 
 from django.urls import reverse_lazy
 
@@ -6,14 +6,20 @@ from django.urls import reverse_lazy
 
 dreams_section = NavSection("Dreams")
 
-dreams_items = {
-    "dreams_dream_list": NavItem("Dream List", reverse_lazy("dreams:dream_list")),
-    "dreams_theme_list": NavItem("Themes", reverse_lazy("dreams:theme_list")),
-    "dreams_notification_list": NavItem("Notifications", reverse_lazy("dreams:notification_list"))
-}
+dreams_settings_collapse = NavCollapse("Settings", icon="fas fa-fw fa-cog")
 
-for _, item in dreams_items.items():
-    dreams_section.add_item(item)
+dream_list = NavItem("Dream List", reverse_lazy("dreams:dream_list"))
+
+dreams_settings = [
+    NavItem("Themes", reverse_lazy("dreams:theme_list")),
+    NavItem("Notifications", reverse_lazy("dreams:notification_list")),
+]
+
+for item in dreams_settings:
+    dreams_settings_collapse.add_item(item)
+
+dreams_section.add_item(dream_list)
+dreams_section.add_item(dreams_settings_collapse)
 
 NAV_SECTIONS = [dreams_section]
 
