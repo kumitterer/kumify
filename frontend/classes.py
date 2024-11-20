@@ -98,6 +98,14 @@ class DashboardSection:
         self.name = name
         self.template = template
         self.context = context or {}
+        self.styles = []
+        self.scripts = []
 
     def get_html(self, request):
         return render_to_string(self.template, self.context, request)
+
+    def add_style(self, style):
+        self.styles.append(style)
+
+    def add_script(self, script):
+        self.scripts.append(script)

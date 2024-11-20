@@ -1,6 +1,7 @@
 from frontend.classes import NavSection, NavItem, NavCollapse, DashboardSection
 
 from django.urls import reverse_lazy
+from django.templatetags.static import static
 
 # Sidebar navigation items
 
@@ -30,5 +31,13 @@ NAV_SECTIONS = [mood_section]
 # Dashboard sections
 
 mood_section = DashboardSection("Moods", "mood/dashboard_section.html")
+
+mood_section.add_script(static("mood/dist/js/d3.v7.min.js"))
+mood_section.add_script(static("mood/dist/js/cal-heatmap.min.js"))
+
+mood_section.add_script(static("mood/dashboard.js"))
+
+mood_section.add_style(static("mood/dist/css/cal-heatmap.css"))
+
 
 DASHBOARD_SECTIONS = [mood_section]

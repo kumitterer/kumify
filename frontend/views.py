@@ -4,6 +4,8 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import get_user_model, login
 from django.urls import reverse_lazy
 
+from .templatetags.dashboard import dashboard_styles, dashboard_scripts
+
 
 class DashboardView(LoginRequiredMixin, TemplateView):
     template_name = "frontend/dashboard.html"
@@ -14,12 +16,8 @@ class DashboardView(LoginRequiredMixin, TemplateView):
         context["subtitle"] = (
             "An overview of everything going on in your Kumify account."
         )
-        context["scripts"] = [
-            "frontend/dist/js/d3.v7.min.js",
-            "frontend/dist/js/cal-heatmap.min.js",
-            "frontend/js/dashboard.js",
-        ]
-        context["styles"] = ["frontend/dist/css/cal-heatmap.css"]
+        context["scripts"] = dashboard_scripts()
+        context["styles"] = dashboard_styles()
         return context
 
 
