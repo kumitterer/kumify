@@ -15,6 +15,7 @@ from django.utils import timezone
 from django.views.decorators.clickjacking import xframe_options_sameorigin
 from django.utils.decorators import method_decorator
 from django.db.models import Count
+from django.db.models.functions import TruncDate
 
 from .models import Status, Activity, Mood, StatusMedia, StatusActivity
 from .forms import StatusForm
@@ -419,7 +420,7 @@ class MoodStatisticsView(LoginRequiredMixin, TemplateView):
         if startdate:
             mindate = datetime.strptime(startdate, "%Y-%m-%d")
         else:
-            mindate = maxdate - relativedelta.relativedelta(weeks=1) # noqa: F841
+            mindate = maxdate - relativedelta.relativedelta(weeks=1)  # noqa: F841
             # TODO: Do something with this...?
 
         context = super().get_context_data(**kwargs)
@@ -561,17 +562,18 @@ class MoodCountHeatmapJSONView(LoginRequiredMixin, View):
         else:
             mindate = maxdate - relativedelta.relativedelta(years=1)
 
-        data = (
-            Status.objects.filter(
-                user=request.user, timestamp__gte=mindate, timestamp__lte=maxdate
-        
-            )
-            .annotate(value=Count("id"))
+        data = Status.objects.filter(
+            user=request.user, timestamp__gte=mindate, timestamp__lte=maxdate
         )
 
-        # TODO: Should eventually change this so that it returns a *color* as a value and the count as a tooltip
-        data = [{"date": d.timestamp.strftime("%Y-%m-%d"), "value": d.value} for d in data]
+        output = {}
 
-        res.write(json.dumps(data))
+        for entry in data:
+            date = entry.timestamp.strftime("%Y-%m-%d")
+            output[date] = output.get(date, 0) + 1
+
+        output = [{"date": key, "value": value} for key, value in output.items()]
+
+        res.write(json.dumps(output))
 
         return res
