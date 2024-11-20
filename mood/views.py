@@ -14,8 +14,7 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.utils import timezone
 from django.views.decorators.clickjacking import xframe_options_sameorigin
 from django.utils.decorators import method_decorator
-from django.db.models import Count
-from django.db.models.functions import TruncDate
+from django.contrib.staticfiles.templatetags.staticfiles import static
 
 from .models import Status, Activity, Mood, StatusMedia, StatusActivity
 from .forms import StatusForm
@@ -185,12 +184,12 @@ class ActivityEditView(LoginRequiredMixin, UpdateView):
         context["title"] = "Edit Activity"
         context["subtitle"] = "Make changes to the activity."
         context["scripts"] = [
-            "colorfield/jscolor/jscolor.js",
-            "colorfield/colorfield.js",
-            "frontend/js/fontawesome-iconpicker.min.js",
-            "frontend/js/iconpicker-loader.js",
+            static("colorfield/jscolor/jscolor.js"),
+            static("colorfield/colorfield.js"),
+            static("frontend/js/fontawesome-iconpicker.min.js"),
+            static("frontend/js/iconpicker-loader.js"),
         ]
-        context["styles"] = ["frontend/css/fontawesome-iconpicker.min.css"]
+        context["styles"] = [static("frontend/css/fontawesome-iconpicker.min.css")]
         context["buttons"] = [
             (
                 reverse_lazy("mood:activity_delete", kwargs={"id": self.kwargs["id"]}),
@@ -217,12 +216,12 @@ class ActivityCreateView(LoginRequiredMixin, CreateView):
         context["title"] = "Create Activity"
         context["subtitle"] = "Add a new activity."
         context["scripts"] = [
-            "colorfield/jscolor/jscolor.js",
-            "colorfield/colorfield.js",
-            "frontend/js/fontawesome-iconpicker.min.js",
-            "frontend/js/iconpicker-loader.js",
+            static("colorfield/jscolor/jscolor.js"),
+            static("colorfield/colorfield.js"),
+            static("frontend/js/fontawesome-iconpicker.min.js"),
+            static("frontend/js/iconpicker-loader.js"),
         ]
-        context["styles"] = ["frontend/css/fontawesome-iconpicker.min.css"]
+        context["styles"] = [static("frontend/css/fontawesome-iconpicker.min.css")]
         return context
 
     def form_valid(self, form):
@@ -294,12 +293,12 @@ class MoodCreateView(LoginRequiredMixin, CreateView):
         context["title"] = "Create Activity"
         context["subtitle"] = "Add a new activity."
         context["scripts"] = [
-            "colorfield/jscolor/jscolor.js",
-            "colorfield/colorfield.js",
-            "frontend/js/fontawesome-iconpicker.min.js",
-            "frontend/js/iconpicker-loader.js",
+            static("colorfield/jscolor/jscolor.js"),
+            static("colorfield/colorfield.js"),
+            static("frontend/js/fontawesome-iconpicker.min.js"),
+            static("frontend/js/iconpicker-loader.js"),
         ]
-        context["styles"] = ["frontend/css/fontawesome-iconpicker.min.css"]
+        context["styles"] = [static("frontend/css/fontawesome-iconpicker.min.css")]
         return context
 
     def form_valid(self, form):
