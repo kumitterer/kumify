@@ -14,7 +14,7 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.utils import timezone
 from django.views.decorators.clickjacking import xframe_options_sameorigin
 from django.utils.decorators import method_decorator
-from django.contrib.staticfiles.templatetags.staticfiles import static
+from django.templatetags.static import static
 
 from .models import Status, Activity, Mood, StatusMedia, StatusActivity
 from .forms import StatusForm
