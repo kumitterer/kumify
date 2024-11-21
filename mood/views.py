@@ -78,7 +78,7 @@ class StatusCreateView(LoginRequiredMixin, CreateView):
         context = super().get_context_data(**kwargs)
         context["title"] = "Create Status"
         context["subtitle"] = "How are you feeling today?"
-        context["scripts"] = ["frontend/js/dropdown-to-buttons.js"]
+        context["scripts"] = [static("frontend/js/dropdown-to-buttons.js")]
         return context
 
     def form_valid(self, form):
@@ -110,7 +110,7 @@ class StatusEditView(LoginRequiredMixin, UpdateView):
         context = super().get_context_data(**kwargs)
         context["title"] = "Update Status"
         context["subtitle"] = "Change a status you created before."
-        context["scripts"] = ["frontend/js/dropdown-to-buttons.js"]
+        context["scripts"] = [static("frontend/js/dropdown-to-buttons.js")]
         context["buttons"] = [
             (
                 reverse_lazy("mood:status_delete", kwargs={"id": self.kwargs["id"]}),
@@ -268,12 +268,12 @@ class MoodEditView(LoginRequiredMixin, UpdateView):
         context["title"] = "Edit Mood"
         context["subtitle"] = "Make changes to the mood."
         context["scripts"] = [
-            "colorfield/jscolor/jscolor.js",
-            "colorfield/colorfield.js",
-            "frontend/js/fontawesome-iconpicker.min.js",
-            "frontend/js/iconpicker-loader.js",
+            static("colorfield/jscolor/jscolor.js"),
+            static("colorfield/colorfield.js"),
+            static("frontend/js/fontawesome-iconpicker.min.js"),
+            static("frontend/js/iconpicker-loader.js"),
         ]
-        context["styles"] = ["frontend/css/fontawesome-iconpicker.min.css"]
+        context["styles"] = [static("frontend/css/fontawesome-iconpicker.min.css")]
         return context
 
     def get_object(self):
