@@ -28,7 +28,6 @@ fetch("/mood/statistics/heatmap/values/")
               }
               return 0;
             },
-            value: "count",
           },
           scale: {
             color: {
@@ -77,7 +76,7 @@ fetch("/mood/statistics/heatmap/values/")
                   const key = Object.keys(moodOptions).reduce((a, b) => Math.abs(moodOptions[a] - average) < Math.abs(moodOptions[b] - average) ? a : b);
                   const mood = moodOptions[key];
 
-                  return `${date_str}<br>Mood Count: ${value}<br>Average Mood: ${mood.name}`
+                  return `${date_str}<br>Mood Count: ${obj.count}<br>Average Mood: ${mood.name}`
                 }
               }
             ]
