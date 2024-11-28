@@ -22,6 +22,7 @@ from .views import (
     ActivityPlotView,
     ActivityPiesView,
     MoodCountHeatmapJSONView,
+    MoodHeatmapValuesJSONView,
 )
 
 from django.urls import path
@@ -62,7 +63,16 @@ urlpatterns = [
     ),
     path("statistics/", MoodStatisticsView.as_view(), name="statistics"),
     path("statistics/csv/", MoodCSVView.as_view(), name="statistics_csv"),
-    path("statistics/heatmap/", MoodCountHeatmapJSONView.as_view(), name="statistics_heatmap"),
+    path(
+        "statistics/heatmap/",
+        MoodCountHeatmapJSONView.as_view(),
+        name="statistics_heatmap",
+    ),
+    path(
+        "statistics/heatmap/values/",
+        MoodHeatmapValuesJSONView.as_view(),
+        name="statistics_heatmap_values",
+    ),
     path("statistics/plot/", MoodPlotView.as_view(), name="statistics_plot"),
     path("statistics/pies/", MoodPiesView.as_view(), name="statistics_pies"),
     path(

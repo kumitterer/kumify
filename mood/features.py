@@ -34,6 +34,9 @@ mood_section = DashboardSection("Moods", "mood/dashboard_section.html")
 
 mood_section.add_script(static("mood/dist/js/d3.v7.min.js"))
 mood_section.add_script(static("mood/dist/js/cal-heatmap.min.js"))
+mood_section.add_script(static("mood/dist/js/popper.min.mjs"))
+mood_section.add_script(static("mood/dist/js/Tooltip.min.js"))
+mood_section.add_script(static("mood/dist/js/Legend.min.js"))
 
 mood_section.add_script(static("mood/dashboard.js"))
 

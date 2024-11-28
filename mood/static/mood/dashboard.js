@@ -1,27 +1,87 @@
 const cal = new CalHeatmap();
-cal.paint({
-  itemSelector: "#mood-count-heatmap",
-  data: {
-    source:
-      "/mood/statistics/heatmap/?start={{start=YYYY-MM-DD}}&end={{end=YYYY-MM-DD}}",
-    x: "date",
-    y: "value",
-  },
-  date: {
-    start: new Date(new Date().setFullYear(new Date().getFullYear() - 1)), // Start from one year ago
-  },
-  range: 13, // Display 13 months so that the current month is included
-  domain: {
-    type: "month",
-    label: {
-      position: "top",
-      text: "MMM YYYY",
-    },
-  },
-  subDomain: {
-    type: "ghDay",
-    width: 10,
-    height: 10,
-  },
-  highlight: [new Date()],
-});
+
+fetch("/mood/statistics/heatmap/values/")
+  .then((response) => response.json())
+  .then((data) => {
+    var moodOptions = data;
+
+    const start = new Date(new Date().setFullYear(new Date().getFullYear() - 1));
+    const end = new Date();
+
+    var domain = Object.keys(moodOptions);
+    const range = ["#ffffd4"].concat(domain.map((key) => moodOptions[key]["color"])).concat(["#000000"]);
+    domain = [0].concat(domain).concat([Infinity]);
+
+    fetch("/mood/statistics/heatmap/?start=" + start.toISOString().split("T")[0] + "&end=" + end.toISOString().split("T")[0])
+      .then((response) => response.json())
+      .then((data) => {
+        cal.paint({
+          itemSelector: "#mood-count-heatmap",
+          data: {
+            source:
+              data,
+            x: "date",
+            y: d => {
+              if (d.average) {
+                const key = Object.keys(moodOptions).reduce((a, b) => Math.abs(moodOptions[a] - d.average) < Math.abs(moodOptions[b] - d.average) ? a : b);
+                return key;
+              }
+              return 0;
+            },
+            value: "count",
+          },
+          scale: {
+            color: {
+              domain: domain,
+              type: "ordinal",
+              range: range,
+            }
+          },
+          date: {
+            start: start, // Start from one year ago
+          },
+          range: 13, // Display 13 months so that the current month is included
+          domain: {
+            type: "month",
+            label: {
+              position: "top",
+              text: "MMM YYYY",
+            },
+          },
+          subDomain: {
+            type: "ghDay",
+            width: 10,
+            height: 10,
+          },
+          highlight: [new Date()],
+        },
+          [
+            [
+              Tooltip, {
+                enabled: true,
+                text: function (timestamp, value, dayjsDate) {
+                  const date_str = dayjsDate.format("YYYY-MM-DD");
+
+                  const obj = data.find(o => o["date"] === date_str);
+
+                  if (!obj) {
+                    return `${date_str}<br>Mood Count: 0<br>Average Mood: N/A`
+                  }
+
+                  const average = obj["average"];
+
+                  if (!average) {
+                    return `${date_str}<br>Mood Count: ${obj.count}<br>Average Mood: N/A`
+                  }
+
+                  const key = Object.keys(moodOptions).reduce((a, b) => Math.abs(moodOptions[a] - average) < Math.abs(moodOptions[b] - average) ? a : b);
+                  const mood = moodOptions[key];
+
+                  return `${date_str}<br>Mood Count: ${value}<br>Average Mood: ${mood.name}`
+                }
+              }
+            ]
+          ]
+        );
+      });
+  });

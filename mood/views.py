@@ -569,9 +569,46 @@ class MoodCountHeatmapJSONView(LoginRequiredMixin, View):
 
         for entry in data:
             date = entry.timestamp.strftime("%Y-%m-%d")
-            output[date] = output.get(date, 0) + 1
 
-        output = [{"date": key, "value": value} for key, value in output.items()]
+            if "date" not in output:
+                output[date] = {"count": 0, "total": 0}
+
+            if entry.mood:
+                output[date]["total"] += entry.mood.value
+            
+            output[date]["count"] += 1
+
+        output = [
+            {
+                "date": key,
+                "count": value["count"],
+                "average": (
+                    (value["total"] / value["count"]) if value["count"] > 0 else 0
+                ),
+            }
+            for key, value in output.items()
+        ]
+
+        res.write(json.dumps(output))
+
+        return res
+
+
+class MoodHeatmapValuesJSONView(LoginRequiredMixin, View):
+    """Returns a JSON object with the available mood values.
+
+    This is used to display the correct colors in the heatmap.
+    """
+
+    def get(self, request, *args, **kwargs):
+        res = HttpResponse(content_type="application/json")
+
+        data = Mood.objects.filter(user=request.user)
+
+        output = {
+            entry.value: {"name": entry.name, "icon": entry.icon, "color": entry.color}
+            for entry in data
+        }
 
         res.write(json.dumps(output))
 
