@@ -553,6 +553,7 @@ class MoodCountHeatmapJSONView(LoginRequiredMixin, View):
 
         if end:
             maxdate = datetime.strptime(end, "%Y-%m-%d")
+            maxdate = maxdate.replace(hour=23, minute=59, second=59)
         else:
             maxdate = timezone.now()
 
