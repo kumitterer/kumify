@@ -23,7 +23,7 @@ def dashboard(context):
     dashboard_html = ""
 
     for section in sections:
-        dashboard_html += f"<h2>{section.name}</h2>"
+        dashboard_html += f"<h3>{section.name}</h3>"
 
         dashboard_html += section.get_html(context["request"])
 
