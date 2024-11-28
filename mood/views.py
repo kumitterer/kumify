@@ -45,20 +45,18 @@ class StatusListView(LoginRequiredMixin, ListView):
         return context
 
     def get_queryset(self):
-        status_list = Status.objects.filter(user=self.request.user).order_by("timestamp")
+        status_list = Status.objects.filter(user=self.request.user).order_by(
+            "timestamp"
+        )
 
         if "from" in self.request.GET:
             from_timestamp = datetime.strptime(self.request.GET["from"], "%Y-%m-%d")
-            status_list = status_list.filter(
-                timestamp__gte=from_timestamp
-            )
+            status_list = status_list.filter(timestamp__gte=from_timestamp)
 
         if "to" in self.request.GET:
             to_timestamp = datetime.strptime(self.request.GET["to"], "%Y-%m-%d")
             to_timestamp = to_timestamp.replace(hour=23, minute=59, second=59)
-            status_list = status_list.filter(
-                timestamp__lte=self.request.GET["to"]
-            )
+            status_list = status_list.filter(timestamp__lte=self.request.GET["to"])
 
         return status_list
 
@@ -586,12 +584,13 @@ class MoodCountHeatmapJSONView(LoginRequiredMixin, View):
         for entry in data:
             date = entry.timestamp.strftime("%Y-%m-%d")
 
-            if "date" not in output:
-                output[date] = {"count": 0, "total": 0}
+            if date not in output:
+                output[date] = {"count": 0, "total": 0, "moodcount": 0}
 
             if entry.mood:
                 output[date]["total"] += entry.mood.value
-            
+                output[date]["moodcount"] += 1
+
             output[date]["count"] += 1
 
         output = [
@@ -599,7 +598,9 @@ class MoodCountHeatmapJSONView(LoginRequiredMixin, View):
                 "date": key,
                 "count": value["count"],
                 "average": (
-                    (value["total"] / value["count"]) if value["count"] > 0 else 0
+                    (value["total"] / value["moodcount"])
+                    if value["moodcount"] > 0
+                    else 0
                 ),
             }
             for key, value in output.items()
