@@ -1,5 +1,10 @@
 const cal = new CalHeatmap();
 
+cal.on("click", (event, timestamp, value) => {
+  const date_str = dayjs(timestamp).format("YYYY-MM-DD");
+  window.location.href = "/mood/?from=" + date_str + "&to=" + date_str;
+});
+
 fetch("/mood/statistics/heatmap/values/")
   .then((response) => response.json())
   .then((data) => {

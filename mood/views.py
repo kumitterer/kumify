@@ -45,7 +45,22 @@ class StatusListView(LoginRequiredMixin, ListView):
         return context
 
     def get_queryset(self):
-        return Status.objects.filter(user=self.request.user).order_by("timestamp")
+        status_list = Status.objects.filter(user=self.request.user).order_by("timestamp")
+
+        if "from" in self.request.GET:
+            from_timestamp = datetime.strptime(self.request.GET["from"], "%Y-%m-%d")
+            status_list = status_list.filter(
+                timestamp__gte=from_timestamp
+            )
+
+        if "to" in self.request.GET:
+            to_timestamp = datetime.strptime(self.request.GET["to"], "%Y-%m-%d")
+            to_timestamp = to_timestamp.replace(hour=23, minute=59, second=59)
+            status_list = status_list.filter(
+                timestamp__lte=self.request.GET["to"]
+            )
+
+        return status_list
 
 
 class StatusViewView(LoginRequiredMixin, DetailView):
