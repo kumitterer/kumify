@@ -25,7 +25,7 @@ fetch("/mood/statistics/heatmap/values/")
               if (d.average) {
                 const key = Object.keys(moodOptions).reduce((a, b) => Math.abs(a - d.average) < Math.abs(b - d.average) ? a : b);
                 console.log(key, d.average, moodOptions[key]);
-                return key;
+                return Number(key);
               }
               return 0;
             },
