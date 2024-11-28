@@ -12,6 +12,9 @@ fetch("/mood/statistics/heatmap/values/")
     const range = ["#ffffd4"].concat(domain.map((key) => moodOptions[key]["color"])).concat(["#000000"]);
     domain = [0].concat(domain).concat([Infinity]);
 
+    console.log(domain);
+    console.log(range);
+
     fetch("/mood/statistics/heatmap/?start=" + start.toISOString().split("T")[0] + "&end=" + end.toISOString().split("T")[0])
       .then((response) => response.json())
       .then((data) => {
@@ -37,7 +40,7 @@ fetch("/mood/statistics/heatmap/values/")
             }
           },
           date: {
-            start: start, // Start from one year ago
+            start: start,
           },
           range: 13, // Display 13 months so that the current month is included
           domain: {
