@@ -10,7 +10,7 @@ fetch("/mood/statistics/heatmap/values/")
 
     var domain = Object.keys(moodOptions).map((key) => Number(key));
     const range = ["#ffffd4"].concat(domain.map((key) => moodOptions[key]["color"])).concat(["#000000"]);
-    domain = [0].concat(domain).concat([Infinity]);
+    domain = [-Infinity].concat(domain).concat([Infinity]);
 
     fetch("/mood/statistics/heatmap/?start=" + start.toISOString().split("T")[0] + "&end=" + end.toISOString().split("T")[0])
       .then((response) => response.json())
