@@ -33,7 +33,7 @@ fetch("/mood/statistics/heatmap/values/")
           scale: {
             color: {
               domain: domain,
-              type: "ordinal",
+              type: "threshold",
               range: range,
             }
           },
