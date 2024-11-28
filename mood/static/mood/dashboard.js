@@ -23,7 +23,7 @@ fetch("/mood/statistics/heatmap/values/")
             x: "date",
             y: d => {
               if (d.average) {
-                const key = Object.keys(moodOptions).reduce((a, b) => Math.abs(moodOptions[a] - d.average) < Math.abs(moodOptions[b] - d.average) ? a : b);
+                const key = Object.keys(moodOptions).reduce((a, b) => Math.abs(a - d.average) < Math.abs(b - d.average) ? a : b);
                 return key;
               }
               return 0;
@@ -73,7 +73,7 @@ fetch("/mood/statistics/heatmap/values/")
                     return `${date_str}<br>Mood Count: ${obj.count}<br>Average Mood: N/A`
                   }
 
-                  const key = Object.keys(moodOptions).reduce((a, b) => Math.abs(moodOptions[a] - average) < Math.abs(moodOptions[b] - average) ? a : b);
+                  const key = Object.keys(moodOptions).reduce((a, b) => Math.abs(a - average) < Math.abs(b - average) ? a : b);
                   const mood = moodOptions[key];
 
                   return `${date_str}<br>Mood Count: ${obj.count}<br>Average Mood: ${mood.name}`
