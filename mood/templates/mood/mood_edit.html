@@ -1,40 +1,83 @@
 {% extends "frontend/base.html" %}
-{% block "content" %}
-
-{% if form.errors %}
-{% for field in form %}
-{% for error in field.errors %}
-<div class="alert alert-danger" role="alert">
-    {{ field.name }}: {{ error }}
-  </div>
-{% endfor %}
-{% endfor %}
-{% endif %}
-                    <div class="card shadow mb-4">
-                        <div class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold text-primary">Edit {{ object.name }}</h6>
-                        </div>
-                        <div class="card-body">
-                            <form action="" method="POST">
-                            {% csrf_token %}
-                            <div class="table-responsive">
-                                <table>
-                                    <tr><th><label for="id_name">Name:</label></th><td><input type="text" name="name" value="{{ object.name }}" maxlength="64" required id="id_name"></td></tr>
-                                    <tr><th><label for="id_icon">Icon:</label></th><td><input style="visibility: hidden;" class="icp icp-auto" type="text" name="icon" value="{{ object.icon }}" maxlength="64" required id="id_icon"></td></tr>
-                                    <tr><th><label for="id_color">Color:</label></th><td><input type="text"
-                                     id="id_color"
-                                     class="form-control colorfield_field jscolor"
-                                     name="color"
-                                     value="{{ object.color }}"
-                                     placeholder="{{ object.color }}"
-                                     data-jscolor="{hash:true,width:225,height:150,required:true}"
-                                     required /></td></tr>
-                                     <tr><th><label for="id_value">Value:</label></th><td><input name="value" type="number" step="1" value="{{ object.value }}" required id="id_value"></td></tr>
-                                </table>
-                            </div>
-                            <button style="margin-top: 20px;" class="form-control btn-primary" type="submit">Save</button>
-                            </form>
-                        </div>
-                    </div>
-
-{% endblock %}
+{% block content %}
+    {% if form.errors %}
+        {% for field in form %}
+            {% for error in field.errors %}
+                <div class="alert alert-danger" role="alert">{{ field.name }}: {{ error }}</div>
+            {% endfor %}
+        {% endfor %}
+    {% endif %}
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Edit {{ object.name }}</h6>
+        </div>
+        <div class="card-body">
+            <form action="" method="post">
+                {% csrf_token %}
+                <div class="table-responsive">
+                    <table>
+                        <tr>
+                            <th>
+                                <label for="id_name">Name:</label>
+                            </th>
+                            <td>
+                                <input type="text"
+                                       name="name"
+                                       value="{{ object.name }}"
+                                       maxlength="64"
+                                       required
+                                       id="id_name">
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                <label for="id_icon">Icon:</label>
+                            </th>
+                            <td>
+                                <input style="visibility: hidden"
+                                       class="icp icp-auto"
+                                       type="text"
+                                       name="icon"
+                                       value="{{ object.icon }}"
+                                       maxlength="64"
+                                       required
+                                       id="id_icon">
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                <label for="id_color">Color:</label>
+                            </th>
+                            <td>
+                                <input type="text"
+                                       id="id_color"
+                                       class="form-control colorfield_field jscolor"
+                                       name="color"
+                                       value="{{ object.color }}"
+                                       placeholder="{{ object.color }}"
+                                       data-jscolor="{hash:true,width:225,height:150,required:true}"
+                                       required />
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                <label for="id_value">Value:</label>
+                            </th>
+                            <td>
+                                <input name="value"
+                                       type="number"
+                                       step="1"
+                                       value="{{ object.value }}"
+                                       required
+                                       id="id_value">
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <button style="margin-top: 20px"
+                        class="form-control btn-primary"
+                        type="submit">Save</button>
+            </form>
+        </div>
+    </div>
+{% endblock content %}

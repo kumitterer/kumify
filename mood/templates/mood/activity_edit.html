@@ -1,11 +1,11 @@
 {% extends "frontend/base.html" %}
-{% block "content" %}
+{% block content %}
     <div class="card shadow mb-4">
         <div class="card-header py-3">
             <h6 class="m-0 font-weight-bold text-primary">Edit {{ object.name }}</h6>
         </div>
         <div class="card-body">
-            <form action="" method="POST">
+            <form action="" method="post">
                 {% csrf_token %}
                 <div class="table-responsive">
                     <table>
@@ -71,4 +71,4 @@
             </form>
         </div>
     </div>
-{% endblock %}
+{% endblock content %}

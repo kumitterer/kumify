@@ -1,6 +1,6 @@
 {% extends "frontend/base.html" %}
 {% load mood_categories %}
-{% block "content" %}
+{% block content %}
     {% if form.errors %}
         {% for field in form %}
             {% for error in field.errors %}
@@ -13,7 +13,7 @@
             <h6 class="m-0 font-weight-bold text-primary">Edit {{ object.name }}</h6>
         </div>
         <div class="card-body">
-            <form action="" method="POST" enctype="multipart/form-data">
+            <form action="" method="post" enctype="multipart/form-data">
                 {% csrf_token %}
                 <div class="table-responsive">
                     <table>
@@ -122,4 +122,4 @@
             </form>
         </div>
     </div>
-{% endblock %}
+{% endblock content %}

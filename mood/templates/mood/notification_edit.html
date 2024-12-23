@@ -1,30 +1,40 @@
 {% extends "frontend/base.html" %}
-{% block "content" %}
-
-{% if form.errors %}
-{% for field in form %}
-{% for error in field.errors %}
-<div class="alert alert-danger" role="alert">
-    {{ field.name }}: {{ error }}
-  </div>
-{% endfor %}
-{% endfor %}
-{% endif %}
-                    <div class="card shadow mb-4">
-                        <div class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold text-primary">Edit {{ object.time }}</h6>
-                        </div>
-                        <div class="card-body">
-                            <form action="" method="POST">
-                            {% csrf_token %}
-                            <div class="table-responsive">
-                                <table>
-                                    <tr><th><label for="id_time">Time:</label></th><td><input type="time" name="time" value="{% if object.time %}{{ object.time|date:"H:i" }}{% else %}12:00{% endif %}" maxlength="64" required id="id_time"></td></tr>
-                                </table>
-                            </div>
-                            <button style="margin-top: 20px;" class="form-control btn-primary" type="submit">Save</button>
-                            </form>
-                        </div>
-                    </div>
-
-{% endblock %}
+{% block content %}
+    {% if form.errors %}
+        {% for field in form %}
+            {% for error in field.errors %}
+                <div class="alert alert-danger" role="alert">{{ field.name }}: {{ error }}</div>
+            {% endfor %}
+        {% endfor %}
+    {% endif %}
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Edit {{ object.time }}</h6>
+        </div>
+        <div class="card-body">
+            <form action="" method="post">
+                {% csrf_token %}
+                <div class="table-responsive">
+                    <table>
+                        <tr>
+                            <th>
+                                <label for="id_time">Time:</label>
+                            </th>
+                            <td>
+                                <input type="time"
+                                       name="time"
+                                       value="{% if object.time %}{{ object.time|date:"H:i" }}{% else %}12:00{% endif %}"
+                                       maxlength="64"
+                                       required
+                                       id="id_time">
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <button style="margin-top: 20px"
+                        class="form-control btn-primary"
+                        type="submit">Save</button>
+            </form>
+        </div>
+    </div>
+{% endblock content %}
