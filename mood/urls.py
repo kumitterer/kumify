@@ -10,6 +10,7 @@ from .views import (
     ActivityDeleteView,
     MoodListView,
     MoodEditView,
+    MoodCreateView,
     NotificationCreateView,
     NotificationDeleteView,
     NotificationEditView,
@@ -45,6 +46,7 @@ urlpatterns = [
     ),
     path("mood/", MoodListView.as_view(), name="mood_list"),
     path("mood/<int:id>/edit/", MoodEditView.as_view(), name="mood_edit"),
+    path("mood/new/", MoodCreateView.as_view(), name="mood_create"),
     path("notification/", NotificationListView.as_view(), name="notification_list"),
     path(
         "notification/<int:id>/edit/",

@@ -17,7 +17,7 @@ class Mood(models.Model):
     name = models.CharField(max_length=64)
     icon = models.CharField(default="fas fa-star", max_length=64)
     color = ColorField(default="#000000")
-    value = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(255)])
+    value = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(255)])
 
     def __str__(self):
         return self.name

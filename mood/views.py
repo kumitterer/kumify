@@ -265,6 +265,9 @@ class MoodListView(LoginRequiredMixin, ListView):
         context = super().get_context_data(**kwargs)
         context["title"] = "Moods"
         context["subtitle"] = "The different moods you have defined."
+        context["buttons"] = [
+            (reverse_lazy("mood:mood_create"), "Create Mood", "pen")
+        ]
         return context
 
     def get_queryset(self):
