@@ -20,6 +20,27 @@ fetch("/mood/statistics/heatmap/values/")
     fetch("/mood/statistics/heatmap/?start=" + start.toISOString().split("T")[0] + "&end=" + end.toISOString().split("T")[0])
       .then((response) => response.json())
       .then((data) => {
+        // Add days between today and the last day of the month
+        // so that we can make them transparent
+        const today = new Date();
+        const lastDay = new Date(today.getFullYear(), today.getMonth() + 1, 0);
+        const days = lastDay.getDate() - today.getDate();
+
+        for (let i = 1; i <= days; i++) {
+          const date = new Date(today.getFullYear(), today.getMonth(), today.getDate() + i);
+          const formattedDate = dayjs(date).format("YYYY-MM-DD");
+
+          if (data.find(o => o["date"] === formattedDate)) {
+            continue;
+          }
+          
+          data.push({
+            date: dayjs(date).format("YYYY-MM-DD"),
+            count: -Infinity,
+            average: -Infinity,
+          });
+        }
+
         cal.paint({
           itemSelector: "#mood-count-heatmap",
           data: {
@@ -76,6 +97,10 @@ fetch("/mood/statistics/heatmap/values/")
 
                   if (!average) {
                     return `${date_str}<br>Mood Count: ${obj.count}<br>Average Mood: N/A`
+                  }
+
+                  if (average === -Infinity) {
+                    return
                   }
 
                   const key = Object.keys(moodOptions).reduce((a, b) => Math.abs(a - average) < Math.abs(b - average) ? a : b);
