@@ -99,8 +99,11 @@
                                         <input type="checkbox"
                                                {% if activity in object.activity_set %}checked{% endif %}
                                                value="{{ activity.id }}"
-                                               name="activities">
-                                        <i class="{{ activity.icon }}" style="color:{{ activity.color }};"></i> {{ activity }}
+                                               name="activities"
+                                               id="activity-{{ activity.id }}">
+                                        <label for="activity-{{ activity.id }}">
+                                            <i class="{{ activity.icon }}" style="color:{{ activity.color }};"></i> {{ activity }}
+                                        </label>
                                         <br>
                                     {% endif %}
                                 {% endfor %}
