@@ -64,7 +64,7 @@ fetch("/mood/statistics/heatmap/values/")
               Tooltip, {
                 enabled: true,
                 text: function (timestamp, value, dayjsDate) {
-                  const date_str = dayjsDate.format("YYYY-MM-DD");
+                  const date_str = dayjsDate.format("YYYY-MM-DD (dd)");
 
                   const obj = data.find(o => o["date"] === date_str);
 
