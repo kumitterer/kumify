@@ -24,37 +24,44 @@ Kumify is a personal management tool designed to track and manage various aspect
 ### Steps
 
 1. **Clone the repository**:
+
    ```bash
-   git clone https://your-repo-url/kumify.git
+   git clone https://git.private.coffee/kumi/kumify.git
    cd kumify
    ```
 
 2. **Create a virtual environment and activate it**:
+
    ```bash
    python3 -m venv venv
    source venv/bin/activate
    ```
 
 3. **Install the required packages**:
+
    ```bash
    pip install -r requirements.txt
    ```
 
 4. **Configure the settings**:
+
    - Copy `settings.dist.ini` to `settings.ini` and edit as necessary with your configurations (e.g., database settings).
 
 5. **Prepare the database**:
+
    ```bash
    python manage.py makemigrations
    python manage.py migrate
    ```
 
 6. **Create a superuser for administrative access**:
+
    ```bash
    python manage.py createsuperuser
    ```
 
 7. **Run the development server**:
+
    ```bash
    python manage.py runserver
    ```
@@ -90,6 +97,7 @@ This project includes additional tools and dependencies specified in `requiremen
 ### Development Commands
 
 - **Format code with Black**:
+
   ```bash
   black .
   ```
