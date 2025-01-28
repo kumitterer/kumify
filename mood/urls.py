@@ -24,6 +24,7 @@ from .views import (
     ActivityPiesView,
     MoodCountHeatmapJSONView,
     MoodHeatmapValuesJSONView,
+    EncryptorView,
 )
 
 from django.urls import path
@@ -35,6 +36,7 @@ urlpatterns = [
     path("status/<int:id>/view/", StatusViewView.as_view(), name="status_view"),
     path("status/<int:id>/edit/", StatusEditView.as_view(), name="status_edit"),
     path("status/<int:id>/delete/", StatusDeleteView.as_view(), name="status_delete"),
+    path("status/encryptor/", EncryptorView.as_view(), name="encryptor"),
     path("status/new/", StatusCreateView.as_view(), name="status_create"),
     path("activity/", ActivityListView.as_view(), name="activity_list"),
     path("activity/<int:id>/edit/", ActivityEditView.as_view(), name="activity_edit"),

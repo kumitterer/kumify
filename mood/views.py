@@ -5,6 +5,7 @@ from django.views.generic import (
     DetailView,
     CreateView,
     DeleteView,
+    FormView,
     View,
 )
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -17,7 +18,7 @@ from django.utils.decorators import method_decorator
 from django.templatetags.static import static
 
 from .models import Status, Activity, Mood, StatusMedia, StatusActivity
-from .forms import StatusForm
+from .forms import StatusForm, EncryptorForm
 from .statistics import moodstats, activitystats, moodpies, activitymood, activitypies
 
 from common.helpers import get_upload_path
@@ -29,6 +30,10 @@ from dateutil import relativedelta
 from datetime import datetime
 
 import json
+import tempfile
+import logging
+
+import gnupg
 
 
 class StatusListView(LoginRequiredMixin, ListView):
@@ -633,3 +638,57 @@ class MoodHeatmapValuesJSONView(LoginRequiredMixin, View):
         res.write(json.dumps(output))
 
         return res
+
+
+class EncryptorView(LoginRequiredMixin, FormView):
+    """Encryptor for the mood entries.
+
+    This is a simple tool to encrypt mood entries. If a user decides to use
+    GPG encryption, like with Mailvelope, they can use this tool to encrypt
+    their existing mood entries.
+    
+    It takes a GPG public key and encrypts all mood entries with it that are
+    not already encrypted.
+    """
+    
+    template_name = "mood/encryptor.html"
+    form_class = EncryptorForm
+
+    def form_valid(self, form):
+        key = form.cleaned_data["key"]
+
+        with tempfile.TemporaryDirectory() as tempdir:
+            gpg = gnupg.GPG(gnupghome=tempdir)
+
+            try:
+                imported_keys = gpg.import_keys(key)
+
+            except Exception as e:
+                form.add_error("key", str(e))
+                return super().form_invalid(form)
+
+            if not imported_keys.count:
+                form.add_error("key", "No keys imported.")
+                return super().form_invalid(form)
+
+            for status in Status.objects.filter(user=self.request.user):
+                if status.text and not status.text.startswith("-----BEGIN PGP MESSAGE-----"):
+                    encrypted = gpg.encrypt(status.text, imported_keys.fingerprints, always_trust=True)
+                    
+                    if encrypted.ok:
+                        status.text = encrypted.data.decode()
+                        status.save()
+
+                    else:
+                        logging.error(f"Error encrypting for {imported_keys.fingerprints}: {encrypted.status}")
+
+                        if encrypted.status == "invalid recipient":
+                            logging.error(encrypted.status_detail)
+
+                        form.add_error("key", f"Error encrypting: {encrypted.status}")
+                        return super().form_invalid(form)
+
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse_lazy("mood:status_list")

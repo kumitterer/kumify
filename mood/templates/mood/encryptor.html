@@ -1,0 +1,28 @@
+{% extends "frontend/base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+    {% if form.errors %}
+        {% for field in form %}
+            {% for error in field.errors %}
+                <div class="alert alert-danger" role="alert">{{ field.name }}: {{ error }}</div>
+            {% endfor %}
+        {% endfor %}
+    {% endif %}
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Encrypt existing entries</h6>
+        </div>
+        <div class="card-body">
+            <p>Encrypt all existing entries in the database. This will encrypt all entries that are not already encrypted.</p>
+            <form action="" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="form-group">
+                    {{ form | crispy }}
+                </div>
+                <button style="margin-top: 20px"
+                        class="form-control btn-primary"
+                        type="submit">Encrypt</button>
+            </form>
+        </div>
+    </div>
+{% endblock content %}

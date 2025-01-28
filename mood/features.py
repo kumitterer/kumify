@@ -12,12 +12,13 @@ mood_settings_collapse = NavCollapse("Settings", icon="fas fa-fw fa-cog")
 mood_status_list = NavItem("Status List", reverse_lazy("mood:status_list"))
 
 mood_settings = [
-    NavItem("Activities", reverse_lazy("mood:activity_list")),
-    NavItem("Moods", reverse_lazy("mood:mood_list")),
+    NavItem("Activities", reverse_lazy("mood:activity_list"), icon="fas fa-fw fa-list"),
+    NavItem("Moods", reverse_lazy("mood:mood_list"), icon="fas fa-fw fa-smile"),
     NavItem(
-        "Notifications", reverse_lazy("mood:notification_list")
+        "Notifications", reverse_lazy("mood:notification_list"), icon="fas fa-fw fa-bell"
     ),
-    NavItem("Statistics", reverse_lazy("mood:statistics")),
+    NavItem("Statistics", reverse_lazy("mood:statistics"), icon="fas fa-fw fa-chart-pie"),
+    NavItem("Encryptor", reverse_lazy("mood:encryptor"), icon="fas fa-fw fa-lock"),
 ]
 
 for setting in mood_settings:

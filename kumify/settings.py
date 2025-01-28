@@ -53,6 +53,8 @@ INSTALLED_APPS = (
         "multiselectfield",
         "dbsettings",
         "mozilla_django_oidc",
+        "crispy_forms",
+        "crispy_bootstrap4",
     ]
     + CORE_MODULES
     + ENABLED_MODULES
@@ -212,3 +214,7 @@ if "OIDC" in CONFIG_FILE.config:
     OIDC_OP_USER_ENDPOINT = CONFIG_FILE.config.get("OIDC", "UserInfoEndpoint")
 
     OIDC_CREATE_USER = CONFIG_FILE.config.get("OIDC", "CreateUsers", fallback=False)
+
+# Crispy Forms
+
+CRISPY_TEMPLATE_PACK = 'bootstrap4'

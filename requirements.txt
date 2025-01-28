@@ -20,3 +20,6 @@ scipy
 channels
 django-autosecretkey
 mozilla-django-oidc
+python-gnupg
+django-crispy-forms
+crispy-bootstrap4
