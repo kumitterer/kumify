@@ -659,6 +659,7 @@ class EncryptorView(LoginRequiredMixin, FormView):
 
         with tempfile.TemporaryDirectory() as tempdir:
             gpg = gnupg.GPG(gnupghome=tempdir)
+            gpg.encoding = "utf-8"
 
             try:
                 imported_keys = gpg.import_keys(key)
