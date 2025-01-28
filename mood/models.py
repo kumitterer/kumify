@@ -34,7 +34,11 @@ class Status(models.Model):
 
     @property
     def short_text(self):
-        return self.title or self.text[:64]
+        return self.title or (self.text[:64] if not self.is_encrypted else "")
+
+    @property
+    def is_encrypted(self):
+        return self.text.startswith("-----BEGIN PGP MESSAGE-----")
 
     @property
     def activity_set(self):

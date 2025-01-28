@@ -35,7 +35,10 @@
                                            class="{{ activity.activity.icon }}"></i>
                                     {% endfor %}
                                 </td>
-                                <td>{{ status.short_text }}</td>
+                                <td>
+                                    {% if status.is_encrypted %}<i class="fas fa-lock"></i>{% endif %}
+                                    {{ status.short_text }}
+                                </td>
                             </tr>
                         {% endfor %}
                     </tbody>
