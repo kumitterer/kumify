@@ -38,7 +38,7 @@
                                 <label for="id_title">Title:</label>
                             </th>
                             <td>
-                                <input value="{{ object.title }}"
+                                <input value="{% if object.title %}{{ object.title }}{% endif %}"
                                        type="text"
                                        name="title"
                                        maxlength="64"
