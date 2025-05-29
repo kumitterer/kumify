@@ -117,6 +117,20 @@
                                 <input type="file" name="uploads" id="id_uploads" multiple="multiple">
                             </td>
                         </tr>
+                        {% if request.user.userprofile.pgp_key %}
+                        <tr>
+                            <th>
+                                <label for="id_encrypt">Encrypt:</label>
+                            </th>
+                            <td>
+                                <input type="checkbox"
+                                       name="encrypt"
+                                       id="id_encrypt"
+                                       {% if object.encrypt %}checked{% endif %}>
+                                <label for="id_encrypt">Encrypt this status</label>
+                            </td>
+                        </tr>
+                        {% endif %}
                     </table>
                 </div>
                 <button style="margin-top: 20px"

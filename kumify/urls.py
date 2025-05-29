@@ -21,6 +21,7 @@ from msgio.views import TelegramWebhookView
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include('django.contrib.auth.urls')),
+    path('profile/', include('profiles.urls', 'profiles')),
     path('', include("frontend.urls", "frontend")),
     path('mood/', include("mood.urls", "mood")),
     path('cron/', include("cronhandler.urls", "cron")),

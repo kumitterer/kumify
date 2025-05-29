@@ -113,6 +113,40 @@ class StatusCreateView(LoginRequiredMixin, CreateView):
             dba.file.save(get_upload_path(form.instance, attachment.name), attachment)
             dba.save()
 
+        if form.cleaned_data["encrypt"] and self.request.user.userprofile.pgp_key:
+            with tempfile.TemporaryDirectory() as gnupghome:
+                gpg = gnupg.GPG(gnupghome=gnupghome)
+                gpg.encoding = 'utf-8'
+
+                # Check if the content is already encrypted
+                if form.instance.text.startswith("-----BEGIN PGP MESSAGE-----"):
+                    logging.info("Content is already encrypted, skipping encryption.")
+                else:
+                    # Import the user's public key
+                    import_result = gpg.import_keys(self.request.user.userprofile.pgp_key)
+                    
+                    if import_result.count == 0:
+                        logging.error("No public keys imported")
+                        form.add_error(None, "Invalid PGP Key: No keys imported")
+                        return super().form_invalid(form)
+
+                    # Use the first imported key's fingerprint as recipient
+                    recipient_fingerprint = import_result.fingerprints[0]
+
+                    encrypted = gpg.encrypt(
+                        form.instance.text,
+                        recipients=[recipient_fingerprint],
+                        always_trust=True,
+                    )
+
+                    if encrypted.ok:
+                        form.instance.text = str(encrypted)
+                        form.instance.save()
+                    else:
+                        logging.error(f"Error encrypting: {encrypted.status}")
+                        form.add_error(None, f"Error encrypting: {encrypted.status}")
+                        return super().form_invalid(form)
+
         return ret
 
     def get_success_url(self):
@@ -270,9 +304,7 @@ class MoodListView(LoginRequiredMixin, ListView):
         context = super().get_context_data(**kwargs)
         context["title"] = "Moods"
         context["subtitle"] = "The different moods you have defined."
-        context["buttons"] = [
-            (reverse_lazy("mood:mood_create"), "Create Mood", "pen")
-        ]
+        context["buttons"] = [(reverse_lazy("mood:mood_create"), "Create Mood", "pen")]
         return context
 
     def get_queryset(self):
@@ -646,11 +678,11 @@ class EncryptorView(LoginRequiredMixin, FormView):
     This is a simple tool to encrypt mood entries. If a user decides to use
     GPG encryption, like with Mailvelope, they can use this tool to encrypt
     their existing mood entries.
-    
+
     It takes a GPG public key and encrypts all mood entries with it that are
     not already encrypted.
     """
-    
+
     template_name = "mood/encryptor.html"
     form_class = EncryptorForm
 
@@ -673,15 +705,21 @@ class EncryptorView(LoginRequiredMixin, FormView):
                 return super().form_invalid(form)
 
             for status in Status.objects.filter(user=self.request.user):
-                if status.text and not status.text.startswith("-----BEGIN PGP MESSAGE-----"):
-                    encrypted = gpg.encrypt(status.text, imported_keys.fingerprints, always_trust=True)
-                    
+                if status.text and not status.text.startswith(
+                    "-----BEGIN PGP MESSAGE-----"
+                ):
+                    encrypted = gpg.encrypt(
+                        status.text, imported_keys.fingerprints, always_trust=True
+                    )
+
                     if encrypted.ok:
                         status.text = encrypted.data.decode()
                         status.save()
 
                     else:
-                        logging.error(f"Error encrypting for {imported_keys.fingerprints}: {encrypted.status}")
+                        logging.error(
+                            f"Error encrypting for {imported_keys.fingerprints}: {encrypted.status}"
+                        )
 
                         if encrypted.status == "invalid recipient":
                             logging.error(encrypted.status_detail)

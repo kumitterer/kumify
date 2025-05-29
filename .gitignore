@@ -5,3 +5,4 @@ venv/
 localsettings.py
 settings.ini
 /static/
+/output

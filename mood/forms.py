@@ -1,4 +1,4 @@
-from django.forms import ModelForm, ModelMultipleChoiceField, Form, CharField, Textarea
+from django.forms import ModelForm, ModelMultipleChoiceField, Form, CharField, Textarea, BooleanField
 
 from multiupload.fields import MultiFileField
 
@@ -10,6 +10,7 @@ class StatusForm(ModelForm):
     activities = ModelMultipleChoiceField(
         queryset=Activity.objects.all(), required=False
     )
+    encrypt = BooleanField(required=False)
 
     class Meta:
         model = Status

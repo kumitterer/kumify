@@ -39,6 +39,7 @@ CORE_MODULES = [
     "frontend",
     "msgio",
     "cronhandler",
+    "profiles",
 ]
 
 INSTALLED_APPS = (
@@ -217,4 +218,4 @@ if "OIDC" in CONFIG_FILE.config:
 
 # Crispy Forms
 
-CRISPY_TEMPLATE_PACK = 'bootstrap4'
+CRISPY_TEMPLATE_PACK = "bootstrap4"

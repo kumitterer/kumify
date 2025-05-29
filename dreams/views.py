@@ -171,10 +171,10 @@ class ThemeEditView(LoginRequiredMixin, UpdateView):
         context["scripts"] = [
             static("colorfield/jscolor/jscolor.js"),
             static("colorfield/colorfield.js"),
-            static("frontend/js/fontawesome-iconpicker.min.js"),
-            static("frontend/js/iconpicker-loader.js"),
+            static("frontend/dist/js/fontawesome-iconpicker.min.js"),
+            static("frontend/dist/js/iconpicker-loader.js"),
         ]
-        context["styles"] = [static("frontend/css/fontawesome-iconpicker.min.css")]
+        context["styles"] = [static("frontend/dist/css/fontawesome-iconpicker.min.css")]
         context["buttons"] = [
             (
                 reverse_lazy("dreams:theme_delete", kwargs={"id": self.kwargs["id"]}),
@@ -203,10 +203,10 @@ class ThemeCreateView(LoginRequiredMixin, CreateView):
         context["scripts"] = [
             static("colorfield/jscolor/jscolor.js"),
             static("colorfield/colorfield.js"),
-            static("frontend/js/fontawesome-iconpicker.min.js"),
-            static("frontend/js/iconpicker-loader.js"),
+            static("frontend/dist/js/fontawesome-iconpicker.min.js"),
+            static("frontend/dist/js/iconpicker-loader.js"),
         ]
-        context["styles"] = [static("frontend/css/fontawesome-iconpicker.min.css")]
+        context["styles"] = [static("frontend/dist/css/fontawesome-iconpicker.min.css")]
         return context
 
     def form_valid(self, form):

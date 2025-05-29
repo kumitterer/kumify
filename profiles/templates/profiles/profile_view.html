@@ -1,0 +1,27 @@
+{% extends "frontend/base.html" %}
+{% block content %}
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">{{ title }}</h6>
+        </div>
+        <div class="card-body">
+            <p>
+                <strong>Username:</strong> {{ request.user.username }}
+            </p>
+            <p>
+                <strong>Email:</strong> {{ request.user.email }}
+            </p>
+            <p>
+                <strong>Display Name:</strong> {{ profile.display_name|default:"Not set" }}
+            </p>
+            <p>
+                <strong>Time Zone:</strong> {{ profile.timezone|default:"Not set" }}
+            </p>
+            <p>
+                <strong>PGP Key:</strong>
+            </p>
+            <pre style="white-space: pre-wrap;">{{ profile.pgp_key|default:"No PGP key set." }}</pre>
+            <a class="btn btn-primary" href="{% url 'profiles:profile_edit' %}">Edit Profile</a>
+        </div>
+    </div>
+{% endblock %}
