@@ -2,7 +2,7 @@ django[argon2]
 django-colorfield
 django-multiupload
 django-storages
-git+https://github.com/jazzband/django-polymorphic.git@v4.0.0a
+git+https://github.com/jazzband/django-polymorphic.git@v4.1.0
 git+https://git.private.coffee/kumi/django-multiselectfield.git
 git+https://github.com/Chive/django-multiupload.git
 dbsettings
